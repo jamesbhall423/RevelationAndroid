@@ -6,13 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Connect"
+        tools:layout_editor_absoluteX="118dp"
+        tools:layout_editor_absoluteY="368dp" />
+
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="IP Address"
+        tools:layout_editor_absoluteX="70dp"
+        tools:layout_editor_absoluteY="311dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
