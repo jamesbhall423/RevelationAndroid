@@ -10,18 +10,22 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="368dp"
         android:text="Connect"
-        tools:layout_editor_absoluteX="118dp"
-        tools:layout_editor_absoluteY="368dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="311dp"
         android:ems="10"
         android:inputType="text"
         android:text="IP Address"
-        tools:layout_editor_absoluteX="70dp"
-        tools:layout_editor_absoluteY="311dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

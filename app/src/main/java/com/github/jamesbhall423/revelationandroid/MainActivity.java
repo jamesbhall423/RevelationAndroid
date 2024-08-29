@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent gameActivity = new Intent();
                 gameActivity.setClass(MainActivity.this, GameActivity.class);
-                gameActivity.putExtra(GameActivity.IP_OTHER,ip.getText());
+                gameActivity.putExtra(GameActivity.IP_OTHER,ip.getText().toString());
 
                 startActivity(gameActivity);
             }
