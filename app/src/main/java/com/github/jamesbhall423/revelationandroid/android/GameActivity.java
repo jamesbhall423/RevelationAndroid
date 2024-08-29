@@ -27,6 +27,7 @@ public class GameActivity extends Activity {
     private AndroidSquare[][] board;
     private BoxModel model;
     private GridView displayBoard;
+    private GridView display;
     private AndroidMenu androidMenu;
     private AndroidSelector selector;
     private boolean host;
@@ -37,7 +38,6 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         final String ip_extra = intent.getStringExtra(IP_OTHER);
-        System.out.println("Hello There");
         Thread loader = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -69,7 +69,6 @@ public class GameActivity extends Activity {
                     setDetails(model,false);
                 }
             });
-            System.out.println("Exiting load IP");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,18 +79,21 @@ public class GameActivity extends Activity {
     private void setDetails(BoxModel model, boolean host) {
         this.host = host;
         this.map = model.cmap();
-        Log.e("Game Activity","IP Loaded");
         ListView selectorView = new ListView(this);
         selector = new AndroidSelector(selectorView,model);
         displayBoard = new GridView(this);
         displayBoard.setNumColumns(model.displayWidth());
         displayBoard.setHorizontalSpacing(1);
         displayBoard.setVerticalSpacing(1);
+        display = new GridView(this);
+        board = new AndroidSquare[model.displayHeight()][model.displayWidth()];
         for (int y = 0; y < model.displayHeight(); y++) for (int x = 0; x < model.displayWidth(); x++) {
             board[y][x] = new AndroidSquare(this,model.getDisplaySquare(x,y),selector);
             displayBoard.addView(board[y][x]);
         }
-        addContentView(selectorView,null);
-        Log.e("Game Activity","Components Added");
+        display.setNumColumns(1);
+        display.addView(selectorView);
+        display.addView(displayBoard);
+        addContentView(display,null);
     }
 }

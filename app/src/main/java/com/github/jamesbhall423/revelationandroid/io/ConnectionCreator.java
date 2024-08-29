@@ -25,8 +25,8 @@ public class ConnectionCreator {
         ServerSocket welcomeSocket = new ServerSocket(PORT);
         Socket hostSocket = new Socket(address,PORT);
         Socket clientSocket = welcomeSocket.accept();
-        InetBuffer iBuffer = new InetBuffer(hostSocket);
-        InetReceiver iReceiver = new InetReceiver(clientSocket);
+        InetReceiver iReceiver = new InetReceiver(hostSocket);
+        InetBuffer iBuffer = new InetBuffer(clientSocket);
         CMap map=(CMap)iReceiver.istream.readObject();
         welcomeSocket.close();
         return createBoxModel(map,iBuffer,iReceiver,1);
