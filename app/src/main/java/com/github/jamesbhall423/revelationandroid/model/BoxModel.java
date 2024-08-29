@@ -44,11 +44,13 @@ public class BoxModel {
     private BoxViewUpdater updater;
 	private boolean flipDisplay = false;
 	private ModelMenuItem declareVictory;
+	private CMap map;
     public BoxModel(CMap map,int displayPlayer,CBuffer buffer, BoxViewUpdater updater) {
 		loadCMap(map, displayPlayer, buffer);
         this.updater = updater;
     }
 	private void loadCMap(CMap map,int displayPlayer,CBuffer buffer) {
+    	this.map = map;
 		flipDisplay = displayPlayer>0;
 		board = map.createBoard(flipDisplay);
         this.displayPlayer = displayPlayer;
@@ -69,6 +71,9 @@ public class BoxModel {
 		endTimes = new int[players.length];
 		notifications.add(new StartNotification(player(),players[displayPlayer].message));
 		updateDeclareResponsive();
+	}
+	public CMap cmap() {
+    	return map;
 	}
 	public List<CAction> notifications() {
 		return notifications;

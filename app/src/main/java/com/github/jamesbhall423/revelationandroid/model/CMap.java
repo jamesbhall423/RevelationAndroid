@@ -30,7 +30,7 @@ public class CMap implements Cloneable, Serializable {
 		this.players=players;
 	}
 	public static String expand(String name) {
-		return "james/games/connection/maps/"+name+".cmap";
+		return "com/github/jamesbhall423/revelationandroid/maps/"+name+".cmap";
 	}
 	public Object clone() {
 		try {

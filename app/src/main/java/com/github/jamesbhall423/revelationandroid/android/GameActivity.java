@@ -8,13 +8,15 @@ import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.ListView;
 
+import com.github.jamesbhall423.revelationandroid.io.ConnectionCreator;
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.CMap;
-import com.github.jamesbhall423.revelationandroid.model.InetBuffer;
-import com.github.jamesbhall423.revelationandroid.model.InetReciever;
+import com.github.jamesbhall423.revelationandroid.io.InetBuffer;
+import com.github.jamesbhall423.revelationandroid.io.InetReceiver;
 import com.github.jamesbhall423.revelationandroid.model.SelfBuffer;
 
 import java.io.ObjectInputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import android.util.Log;
@@ -60,28 +62,11 @@ public class GameActivity extends Activity {
 
     private void loadIP(String ip_extra) {
         try {
-            System.out.println("Hello IP");
-            final int player=1;
-            int port = 4441;
-            ServerSocket welcomeSocket = new ServerSocket(IN_PORT);
-            System.out.println("Welcome socket created but not accepted");
-            System.out.println("Creating socket "+ip_extra+" "+port);
-            Socket outSocket = new Socket(ip_extra,port);
-            System.out.println("Out Socket created");
-            Socket inSocket = welcomeSocket.accept();
-            System.out.println("Sockets Created");
-            ObjectInputStream istream = new ObjectInputStream(inSocket.getInputStream());
-            final CMap map=(CMap)istream.readObject();
-            final SelfBuffer[] bs = new SelfBuffer[map.players.length];
-            bs[player]=new SelfBuffer();
-            bs[1-player]=new InetBuffer(outSocket);
-            SelfBuffer.setLinks(bs);
-            new Thread(new InetReciever(inSocket,bs[player])).start();
-            welcomeSocket.close();
+            final BoxModel model = ConnectionCreator.createClient(ip_extra);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    setDetails((CMap)map.clone(),player,player==0,bs[player]);
+                    setDetails(model,false);
                 }
             });
             System.out.println("Exiting load IP");
@@ -92,10 +77,9 @@ public class GameActivity extends Activity {
         }
     }
 
-    private void setDetails(CMap map, int playerNum, boolean host, SelfBuffer buffer) {
+    private void setDetails(BoxModel model, boolean host) {
         this.host = host;
-        model = new BoxModel(map, playerNum, buffer);
-        this.map = map;
+        this.map = model.cmap();
         Log.e("Game Activity","IP Loaded");
         ListView selectorView = new ListView(this);
         selector = new AndroidSelector(selectorView,model);

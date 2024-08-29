@@ -1,13 +1,15 @@
-package com.github.jamesbhall423.revelationandroid.model;
+package com.github.jamesbhall423.revelationandroid.io;
+
+import com.github.jamesbhall423.revelationandroid.model.CBuffer;
+import com.github.jamesbhall423.revelationandroid.model.ChannelledObject;
 
 import java.io.* ;
 import java.net.* ;
-public class InetReciever implements Runnable {
-	private ObjectInputStream istream;
-	private ObjectOutputStream ostream;
-	private CBuffer buffer;
-	public InetReciever(Socket socket, CBuffer buffer) throws IOException {
-		this.buffer=buffer;
+public class InetReceiver implements Runnable {
+	public ObjectInputStream istream;
+	public ObjectOutputStream ostream;
+	public CBuffer buffer;
+	public InetReceiver(Socket socket) throws IOException {
 		istream = new ObjectInputStream(socket.getInputStream());
 		ostream = new ObjectOutputStream(socket.getOutputStream());
 	}

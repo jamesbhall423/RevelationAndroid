@@ -1,10 +1,13 @@
-package com.github.jamesbhall423.revelationandroid.model;
+package com.github.jamesbhall423.revelationandroid.io;
+
+import com.github.jamesbhall423.revelationandroid.model.ChannelledObject;
+import com.github.jamesbhall423.revelationandroid.model.SelfBuffer;
 
 import java.io.* ;
 import java.net.* ;
 public class InetBuffer extends SelfBuffer {
-	private ObjectOutputStream ostream;
-	private ObjectInputStream istream;
+	public ObjectOutputStream ostream;
+	public ObjectInputStream istream;
 	public InetBuffer(Socket output) throws IOException {
 		ostream = new ObjectOutputStream(output.getOutputStream());
 		istream = new ObjectInputStream(output.getInputStream());
