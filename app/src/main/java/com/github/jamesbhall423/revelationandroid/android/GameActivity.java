@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.github.jamesbhall423.revelationandroid.R;
 import com.github.jamesbhall423.revelationandroid.io.ConnectionCreator;
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.CMap;
@@ -20,14 +22,15 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import android.util.Log;
+import android.widget.RadioGroup;
 
 public class GameActivity extends Activity {
     private static final int IN_PORT=4111;
     public static final String IP_OTHER = "IP_OTHER";
     private AndroidSquare[][] board;
     private BoxModel model;
-    private GridView displayBoard;
-    private GridView display;
+    private GridLayout displayBoard;
+    private LinearLayout display;
     private AndroidMenu androidMenu;
     private AndroidSelector selector;
     private boolean host;
@@ -79,21 +82,23 @@ public class GameActivity extends Activity {
     private void setDetails(BoxModel model, boolean host) {
         this.host = host;
         this.map = model.cmap();
-        ListView selectorView = new ListView(this);
+        RadioGroup selectorView = new RadioGroup(this);
         selector = new AndroidSelector(selectorView,model);
-        displayBoard = new GridView(this);
-        displayBoard.setNumColumns(model.displayWidth());
-        displayBoard.setHorizontalSpacing(1);
-        displayBoard.setVerticalSpacing(1);
-        display = new GridView(this);
+        displayBoard = new GridLayout(this);
+        displayBoard.setColumnCount(model.displayWidth());
+        displayBoard.setRowCount(model.displayHeight());
+        displayBoard.setOrientation(GridLayout.HORIZONTAL);
+        displayBoard.setUseDefaultMargins(true);
+        display = new LinearLayout(this);
+        display.setOrientation(LinearLayout.VERTICAL);
         board = new AndroidSquare[model.displayHeight()][model.displayWidth()];
         for (int y = 0; y < model.displayHeight(); y++) for (int x = 0; x < model.displayWidth(); x++) {
-            board[y][x] = new AndroidSquare(this,model.getDisplaySquare(x,y),selector);
+            board[y][x] = new AndroidSquare(this,model.getDisplaySquare(x,y),selector,model.displayHeight());
             displayBoard.addView(board[y][x]);
         }
-        display.setNumColumns(1);
         display.addView(selectorView);
         display.addView(displayBoard);
-        addContentView(display,null);
+        setContentView(display);
+        display.invalidate();
     }
 }

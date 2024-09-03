@@ -12,6 +12,9 @@ public class AndroidGraphics implements SquareGraphics {
         this.canvas = canvas;
         this.paint = paint;
     }
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
     @Override
     public double getWidth() {
         return canvas.getWidth();
@@ -24,7 +27,8 @@ public class AndroidGraphics implements SquareGraphics {
 
     @Override
     public void setColor(int color) {
-        paint.setColor(color);
+        //Adding alpha
+        paint.setColor(color+(255<<24));
     }
 
     @Override

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
+import android.widget.Button;
 
+import com.github.jamesbhall423.revelationandroid.graphics.Colors;
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayLocal;
 import com.github.jamesbhall423.revelationandroid.graphics.SquareGraphics;
 import com.github.jamesbhall423.revelationandroid.graphics.SquarePainter;
@@ -18,18 +20,37 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     private SquareClass model;
     private RevelationDisplayLocal endDisplay;
     private static final int SIZE = 32;
-    public AndroidSquare(Context context, SquareClass square,ModelClickListener listener) {
+    private int boardSize;
+    Paint paint = new Paint();
+    public AndroidSquare(Context context, SquareClass square,ModelClickListener listener, int boardSize) {
         super(context);
+        this.boardSize = boardSize;
         modelX = square.X;
         modelY = square.Y;
         model = square;
-        setMeasuredDimension(SIZE,SIZE);
-        setOnClickListener(this);
+//        setOnClickListener(this);
         this.listener = listener;
+//        setWillNotDraw(false);
+//        setFocusable(true);
+//        setFocusableInTouchMode(true);
+    }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        widthMeasureSpec/=boardSize;
+        heightMeasureSpec/=boardSize;
+        if (heightMeasureSpec>widthMeasureSpec) heightMeasureSpec = widthMeasureSpec;
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int widthSpec = MeasureSpec.getMode(widthMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSpec = MeasureSpec.getMode(heightMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        setMeasuredDimension(width, height);
+
     }
     @Override
     public void onDraw(Canvas canvas) {
-        Paint paint = new Paint();
+        super.onDraw(canvas);
         AndroidGraphics graphics = new AndroidGraphics(canvas,paint);
         SquarePainter.paint(model,graphics,endDisplay);
     }
