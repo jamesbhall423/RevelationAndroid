@@ -40,6 +40,11 @@ public class SquarePainter {
 			g.drawString(""+model.getTeleporter()[2],0,11);
 		}
 		drawRoads(model, g, endDisplay, width, height);
+//		int pl = model.player();
+//		if (model.flipDisplay()) pl=-pl;
+//		if (pl==1) g.setColor(Colors.cyan);
+//		else if (pl==-1) g.setColor(Colors.magenta);
+//		if (model.player()!=0) g.fillRectangle(2*(int)width/3,2*(int)height/3,(int)width/3,(int)height/3);
 		setPlayerColor(model,g);
 		if (endDisplay!=null) drawRevelationDisplay(model,g,endDisplay.display(model),width,height);
 		else if (model.getView()!=0) g.fillEllipse((int)width/2-5,(int)height/2-5,10,10);

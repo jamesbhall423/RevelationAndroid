@@ -30,7 +30,7 @@ public interface CBuffer {
 	 * @return
 	 *
 	 */
-	public CBuffer newBuffer(ChannelledObject o);
+//	public CBuffer newBuffer(ChannelledObject o);
 
 	/**
 	 * Method sendObject
@@ -41,7 +41,7 @@ public interface CBuffer {
 	 * @return
 	 *
 	 */
-	public int sendObject(ChannelledObject o);
+//	public int sendObject(ChannelledObject o);
 	/**
 	 * Method sendObject
 	 *

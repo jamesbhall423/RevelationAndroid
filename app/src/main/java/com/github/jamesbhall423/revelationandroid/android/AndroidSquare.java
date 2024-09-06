@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 
 import com.github.jamesbhall423.revelationandroid.graphics.Colors;
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayLocal;
@@ -24,20 +26,29 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     Paint paint = new Paint();
     public AndroidSquare(Context context, SquareClass square,ModelClickListener listener, int boardSize) {
         super(context);
+        System.out.println("Board size = "+boardSize);
         this.boardSize = boardSize;
         modelX = square.X;
         modelY = square.Y;
         model = square;
-//        setOnClickListener(this);
+        model.registerUpdater(this);
+        setOnClickListener(this);
         this.listener = listener;
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1.0f
+        );
+       setLayoutParams(param);
+       setLayoutParams(param);
 //        setWillNotDraw(false);
 //        setFocusable(true);
 //        setFocusableInTouchMode(true);
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        widthMeasureSpec/=boardSize;
-        heightMeasureSpec/=boardSize;
+        widthMeasureSpec/=boardSize*2;
+        heightMeasureSpec/=boardSize*2;
         if (heightMeasureSpec>widthMeasureSpec) heightMeasureSpec = widthMeasureSpec;
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSpec = MeasureSpec.getMode(widthMeasureSpec);
@@ -67,5 +78,9 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     @Override
     public void onClick(View v) {
         listener.doClick(modelX,modelY);
+    }
+
+    public void setRevelationDisplay(RevelationDisplayLocal endDisplay) {
+        this.endDisplay = endDisplay;
     }
 }

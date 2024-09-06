@@ -35,9 +35,9 @@ public class SelfBuffer implements CBuffer {
 	 * @return
 	 *
 	 */
-	public CBuffer newBuffer(ChannelledObject o) {
-		return (CBuffer) (o.channel);
-	}
+//	public CBuffer newBuffer(ChannelledObject o) {
+//		return (CBuffer) (o.channel);
+//	}
 
 	/**
 	 * Method sendObject
@@ -48,9 +48,9 @@ public class SelfBuffer implements CBuffer {
 	 * @return
 	 *
 	 */
-	public int sendObject(ChannelledObject o) {
-		return ((CBuffer) (o.channel)).recieveObject(o);
-	}
+//	public int sendObject(ChannelledObject o) {
+//		return ((CBuffer) (o.channel)).recieveObject(o);
+//	}
 
 	/**
 	 * Method sendObject
