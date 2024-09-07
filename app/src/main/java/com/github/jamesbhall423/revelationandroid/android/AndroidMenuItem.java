@@ -23,8 +23,6 @@ public class AndroidMenuItem implements SelectionItemUpdater {
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("setting title and enabled for "+modelItem.name());
-                System.out.println("Enabled: " + modelItem.enabled());
                 androidItem.setTitle(modelItem.display());
                 androidItem.setEnabled(modelItem.enabled());
             }

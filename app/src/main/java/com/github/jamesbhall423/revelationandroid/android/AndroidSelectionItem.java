@@ -26,8 +26,6 @@ public class AndroidSelectionItem implements SelectionItemUpdater {
         context.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("setting title and enabled for "+clickType.name());
-                System.out.println("Enabled: " + clickType.enabled());
                 view.setText(clickType.display());
                 view.setEnabled(clickType.enabled());
             }

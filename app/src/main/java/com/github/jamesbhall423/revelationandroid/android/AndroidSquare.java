@@ -47,15 +47,12 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        widthMeasureSpec/=boardSize*2;
-        heightMeasureSpec/=boardSize*2;
-        if (heightMeasureSpec>widthMeasureSpec) heightMeasureSpec = widthMeasureSpec;
+        int width = widthMeasureSpec/boardSize;
+        int height = heightMeasureSpec/boardSize;
+        if (height>width) height=width;
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int widthSpec = MeasureSpec.getMode(widthMeasureSpec);
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSpec = MeasureSpec.getMode(heightMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-
+        if (modelX==0&&modelY==0) System.out.println("w/h "+width+" "+height);
+        if (modelX==0&&modelY==0) System.out.println("spec "+widthMeasureSpec+" "+heightMeasureSpec);
         setMeasuredDimension(width, height);
 
     }
