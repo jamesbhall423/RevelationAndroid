@@ -18,36 +18,37 @@ public class RevelationDisplayGlobal {
     public boolean flipDisplay;
     public List<RevelationDisplayLocal> parts;
     public static final String REVELATION = "REVELATION";
-    
-    public RevelationDisplayGlobal(BoxModel model) {
+
+    public RevelationDisplayGlobal(final BoxModel model) {
         this.flipDisplay = model.flipDisplay();
         EndStatus endStatus = model.getEndStatus();
         SquareCondition routeCondition;
-        final int declaringPlayer = model.playerSide(model.playerDeclareVictory()) ? 1 : -1;
+        final int declaringPlayerVal = model.playerSide(model.playerDeclareVictory()) ? 1 : -1;
         displayPlayerDeclared = model.playerDeclareVictory()==model.player();
         declarePlayerVictory = displayPlayerDeclared == (endStatus==EndStatus.WIN);
         if (declarePlayerVictory) {
             routeCondition = new SquareCondition() {
                 @Override
                 public boolean conditionFulfilled(SquareModel square) {
-                    return square.player() == declaringPlayer;
+                    return square.player() == declaringPlayerVal;
                 }
             };
-        } else if (displayPlayerDeclared) {
+        } else /*if (displayPlayerDeclared)*/ {
             routeCondition = new SquareCondition() {
                 @Override
                 public boolean conditionFulfilled(SquareModel square) {
-                    return square.getView() == declaringPlayer;
-                }
-            };
-        } else {
-            routeCondition = new SquareCondition() {
-                @Override
-                public boolean conditionFulfilled(SquareModel square) {
-                    return square.player() != 0;
+                    return square.getView(model.playerDeclareVictory()) == declaringPlayerVal;
                 }
             };
         }
+//        else {
+//            routeCondition = new SquareCondition() {
+//                @Override
+//                public boolean conditionFulfilled(SquareModel square) {
+//                    return square.player() != 0;
+//                }
+//            };
+//        }
         Pathfinder finder = new Pathfinder(model.boardModel(),routeCondition);
         Spot endSpot = model.findPathSpot(finder, model.playerSide(model.playerDeclareVictory()));
         if (endSpot==null) throw new RuntimeException();
@@ -56,7 +57,7 @@ public class RevelationDisplayGlobal {
         do {
             path.push(endSpot);
             lastBreak++;
-            if (declaringPlayer!=model.getModelSquare(endSpot.x, endSpot.y).player()) {
+            if (declaringPlayerVal!=model.getModelSquare(endSpot.x, endSpot.y).player()) {
                 lastBreak = 1;
             }
             endSpot = endSpot.getLast();

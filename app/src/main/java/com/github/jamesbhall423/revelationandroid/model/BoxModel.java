@@ -150,7 +150,7 @@ public class BoxModel {
 		if (declareVictory.numLeft()>0) {
 			Pathfinder finder = new Pathfinder(board,new SquareCondition() {
 				public boolean conditionFulfilled(SquareModel square) {
-					return (square.getView()==square.valueSide(side));
+					return (square.getView(player())==square.valueSide(side));
 				}
 			});
 			declareVictory.setEnabled(findPath(finder, side));
@@ -199,7 +199,7 @@ public class BoxModel {
     public boolean testBlocked() {
 		Pathfinder finder = new Pathfinder(board,new SquareCondition() {
 			public boolean conditionFulfilled(SquareModel square) {
-				return (square.getView()!=square.valueSide(!side));
+				return (square.getView(player())!=square.valueSide(!side));
 			}
 		});
 		boolean out = !findPath(finder, side);
@@ -285,7 +285,7 @@ public class BoxModel {
 		updater.updateEndStatus();
 		if (endStatus==EndStatus.WIN||endStatus==EndStatus.LOSS||endStatus==EndStatus.BLOCKED) {
 			for (int y = 0; y < board.length; y++) for (int x = 0; x < board[y].length; x++) {
-				if (board[y][x].player()!=board[y][x].getView()) board[y][x].setView(board[y][x].player());
+				if (board[y][x].player()!=board[y][x].getView(player())) board[y][x].setView(player(),board[y][x].player());
 			}
 		}
         updater.updateGlobal();
@@ -305,7 +305,7 @@ public class BoxModel {
 		SquareModel square = getModelSquare(x, y);
 		int time = square.time();
 		if (time==0) return false;
-		if (revert&&(square.getView()!=0)) return false;
+		if (revert&&(square.getView(player())!=0)) return false;
 		if (roadLast!=null) {
 			if (square.getHighlight()) {
 				highlightRoads(false);

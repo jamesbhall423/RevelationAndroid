@@ -14,7 +14,6 @@ public class SquareAction extends CAction {
 	 *
 	 *
 	 * @param player
-	 * @param time
 	 * @param x
 	 * @param y
 	 *
@@ -45,11 +44,7 @@ public class SquareAction extends CAction {
 		int result=contents;
 		boolean called = square.called(side);
 		if ((!called||!revert)&&square.canPlace(side,revert)) result=square.valueSide(side);
-		if (player()==boxModel.player()) {
-			square.setPlayer(result);
-			setResponse(contents+" to "+result);
-		} else {
-			square.updatePlayer(result);
-		}
+		square.setPlayer(player(),result);
+		setResponse(contents+" to "+result);
 	}
 }

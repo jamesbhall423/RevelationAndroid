@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class SquareClass implements SquareModel, Serializable {
 	private static final long serialVersionUID = 1L;
 	private SquareState state;
-	private int view = 0;
+	private int[] view = new int[2];
 	private boolean called1 = false;
 	private boolean called2 = false;
 	private boolean highlight = false;
@@ -22,14 +22,15 @@ public class SquareClass implements SquareModel, Serializable {
 	 *
 	 * @param x
 	 * @param y
-	 * @param type
+	 * @param state
 	 *
 	 */
 	public SquareClass(int x, int y, SquareState state) {
 		X=x;
 		Y=y;
 		this.state = state;
-		view=state.contents;
+		view[0]=state.contents;
+		view[1]=state.contents;
 	}
 	public void setFlipDisplay(boolean flipDisplay) {
 		this.flipDisplay = flipDisplay;
@@ -71,9 +72,9 @@ public class SquareClass implements SquareModel, Serializable {
 	 *
 	 */
 	@Override
-	public boolean isView(boolean player1) {
-		if (player1) return view==1;
-		else return view==-1;
+	public boolean isView(int callingPlayer,boolean player1) {
+		if (player1) return view[callingPlayer]==1;
+		else return view[callingPlayer]==-1;
 	}
 
 	/**
@@ -96,13 +97,13 @@ public class SquareClass implements SquareModel, Serializable {
 	 *
 	 */
 	@Override
-	public void setPlayer(boolean player) {
+	public void setPlayer(int callingPlayer,boolean player) {
 		if (player) {
 			state.contents=1;
-			view=1;
+			view[callingPlayer]=1;
 		} else {
 			state.contents=-1;
-			view=-1;
+			view[callingPlayer]=-1;
 		}
 		updater.update(X,Y);
 	}
@@ -180,8 +181,8 @@ public class SquareClass implements SquareModel, Serializable {
 	 *
 	 */
 	@Override
-	public int getView() {
-		return view;
+	public int getView(int callingPlayer) {
+		return view[callingPlayer];
 	}
 
 	/**
@@ -192,8 +193,8 @@ public class SquareClass implements SquareModel, Serializable {
 	 *
 	 */
 	@Override
-	public void setView(int observed) {
-		view=observed;
+	public void setView(int callingPlayer, int observed) {
+		view[callingPlayer]=observed;
 		updater.update(X,Y);
 	}
 	@Override
@@ -242,16 +243,17 @@ public class SquareClass implements SquareModel, Serializable {
 	@Override
 	public SquareModel setState(SquareState state) {
 		this.state=state;
-		view=state.contents;
-		if (view!=0) {
+		view[0]=state.contents;
+		view[1]=state.contents;
+		if (state.contents!=0) {
 			called1=true;
 			called2=true;
 		}
 		return this;
 	}
 	@Override
-	public void setPlayer(int player) {
-		view=player;
+	public void setPlayer(int callingPlayer, int player) {
+		view[callingPlayer]=player;
 		state.contents=player;
 		updater.update(X,Y);
 	}

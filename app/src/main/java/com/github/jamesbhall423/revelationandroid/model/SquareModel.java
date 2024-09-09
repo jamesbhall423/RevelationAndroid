@@ -36,7 +36,7 @@ public interface SquareModel {
      * @return
      *
      */
-    boolean isView(boolean player1);
+    boolean isView(int callingPlayer,boolean player1);
 
     /**
      * Method player
@@ -54,7 +54,7 @@ public interface SquareModel {
      * @param player
      *
      */
-    void setPlayer(boolean player);
+    void setPlayer(int callingPlayer,boolean player);
 
     /**
      * Method getTeleporter
@@ -101,7 +101,7 @@ public interface SquareModel {
      * @return
      *
      */
-    int getView();
+    int getView(int callingPlayer);
 
     /**
      * Method setView
@@ -110,7 +110,7 @@ public interface SquareModel {
      * @param observed
      *
      */
-    void setView(int observed);
+    void setView(int callingPlayer, int observed);
 
     void setHighlight(boolean highlight);
 
@@ -130,7 +130,7 @@ public interface SquareModel {
 
     SquareModel setState(SquareState state);
 
-    void setPlayer(int player);
+    void setPlayer(int callingPlayer, int player);
 
     void updatePlayer(int player);
 
