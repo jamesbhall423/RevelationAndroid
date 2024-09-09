@@ -2,6 +2,7 @@ package com.github.jamesbhall423.revelationandroid.graphics;
 
 public class Colors {
 
+    public static int white = 0xffffff;
     public static int orange = 0xff7f00;
     public static int gray = 0x7f7f7f;
     public static int green = 0x00ff00;
