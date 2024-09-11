@@ -22,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
+    public static final String PLAYER_REFERENCE = "PLAYER_REFERENCE";
     private static final int IN_PORT=4111;
     public static final String CONNECTION_DIRECTION = "CONNECTION_DIRECTION";
     public static final String IP_REFERENCE = "IP_REFERENCE";
@@ -50,6 +51,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         final String game_file;
         if (host) game_file =  intent.getStringExtra(GAME_FILE);
         else game_file = null;
+        final int player = intent.getIntExtra(PLAYER_REFERENCE,0)-1;
         TextView typeView = findViewById(R.id.Description);
         TextView ipView = findViewById(R.id.IP);
         if (host) typeView.setText("Hosting");
@@ -59,7 +61,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
             @Override
             public void run() {
                 if (host) loadGameFile(game_file);
-                else loadIP(ip_extra);
+                else loadIP(ip_extra,player);
             }
         });
         loader.start();
@@ -79,9 +81,9 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
 //        return true;
 //    }
 
-    private void loadIP(String ip_extra) {
+    private void loadIP(String ip_extra, int player) {
         try {
-            final BoxModel model = ConnectionCreator.createClient(ip_extra);
+            final BoxModel model = ConnectionCreator.createClient(ip_extra, player);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

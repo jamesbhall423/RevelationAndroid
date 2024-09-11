@@ -27,63 +27,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppInitializer.run(this);
-//        System.out.println("Working Directory = " + System.getProperty("user.dir"));
-//        System.out.println("Files Directory = " + getFilesDir());
-//        AssetManager manager = getAssets();
-//        try {
-//            String[] paths = manager.list("maps/");
-//            System.out.println(paths.length);
-//            for (String path: paths) {
-//                System.out.println(path);
-//            }
-//        } catch (IOException e) {
-//
-//        }
-
-//        LinearLayout mainLayout = new LinearLayout(this);
-//        mainLayout.setOrientation(LinearLayout.VERTICAL);
-//        Button button = new Button(this);
-//        button.setText("Hello");
-//        GridLayout layout = new GridLayout(this);
-//        layout.setOrientation(GridLayout.HORIZONTAL);
-//        layout.setColumnCount(2);
-//        for (int i = 0; i < 4; i++) {
-//            SquareState state = new SquareState();
-//            switch (i) {
-//                case 0:
-//                    state.type = SquareType.Empty;
-//                    break;
-//                case 1:
-//                    state.type = SquareType.Forest;
-//                    break;
-//                case 2:
-//                    state.type = SquareType.Mountain;
-//                    break;
-//                case 3:
-//                    state.type = SquareType.Road;
-//                    state.road = SquareModel.UP+SquareModel.DOWN;
-//            }
-//            SquareClass square = new SquareClass(i%2,i/2,state);
-//            AndroidSquare next = new AndroidSquare(this,square,null,2);
-//            layout.addView(next);
-//        }
-//        mainLayout.addView(button);
-//        mainLayout.addView(layout);
-////        SquareClass square = new SquareClass(0,0,new SquareState());
-////        AndroidSquare next = new AndroidSquare(this,square,null);
-////        ImageView next = new ImageView(this);
-////        next.setImageDrawable(new SquareDrawable(square));
-//        setContentView(mainLayout);
-//        setContentView(R.layout.circle_main);
         setContentView(R.layout.activity_main);
         Button join = findViewById(R.id.join);
         final EditText ip = findViewById(R.id.address);
+        final EditText playerInput = findViewById(R.id.playerInput);
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent gameActivity = new Intent();
                 gameActivity.setClass(MainActivity.this, GameActivity.class);
                 gameActivity.putExtra(GameActivity.IP_REFERENCE,ip.getText().toString());
+                gameActivity.putExtra(GameActivity.PLAYER_REFERENCE,Integer.parseInt(playerInput.getText().toString()));
                 gameActivity.putExtra(GameActivity.CONNECTION_DIRECTION,GameActivity.CLIENT);
                 startActivity(gameActivity);
             }
