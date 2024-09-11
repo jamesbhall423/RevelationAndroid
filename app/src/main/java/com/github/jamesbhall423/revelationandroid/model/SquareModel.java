@@ -92,7 +92,7 @@ public interface SquareModel {
      * @return
      *
      */
-    boolean canPlace(boolean player, boolean revert);
+    boolean canPlace(int player, boolean revert);
 
     /**
      * Method getView
@@ -124,7 +124,7 @@ public interface SquareModel {
 
     void setRoad(int road);
 
-    boolean called(boolean player);
+//    boolean called(boolean player);
 
     SquareState getState();
 

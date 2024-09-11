@@ -10,6 +10,7 @@ public abstract class SquareClickType extends SelectionItem {
     }
     public abstract boolean doModelClick(int modelX, int modelY);
     public void doClick(int modelX, int modelY) {
+        System.out.println("Clicking: "+name()+" "+modelX+" "+modelY);
         doClick(new PointInt2D(modelX, modelY));
     }
     @Override

@@ -26,7 +26,7 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     Paint paint = new Paint();
     public AndroidSquare(Context context, SquareClass square,ModelClickListener listener, int boardSize) {
         super(context);
-        System.out.println("Board size = "+boardSize);
+//        System.out.println("Board size = "+boardSize);
         this.boardSize = boardSize;
         modelX = square.X;
         modelY = square.Y;
@@ -51,8 +51,8 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
         int height = heightMeasureSpec/boardSize;
         if (height>width) height=width;
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (modelX==0&&modelY==0) System.out.println("w/h "+width+" "+height);
-        if (modelX==0&&modelY==0) System.out.println("spec "+widthMeasureSpec+" "+heightMeasureSpec);
+//        if (modelX==0&&modelY==0) System.out.println("w/h "+width+" "+height);
+//        if (modelX==0&&modelY==0) System.out.println("spec "+widthMeasureSpec+" "+heightMeasureSpec);
         setMeasuredDimension(width, height);
 
     }

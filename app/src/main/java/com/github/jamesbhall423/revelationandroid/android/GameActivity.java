@@ -1,13 +1,10 @@
 package com.github.jamesbhall423.revelationandroid.android;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.github.jamesbhall423.revelationandroid.R;
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayGlobal;
@@ -16,23 +13,21 @@ import com.github.jamesbhall423.revelationandroid.io.ConnectionCreator;
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.BoxViewUpdater;
 import com.github.jamesbhall423.revelationandroid.model.CMap;
-import com.github.jamesbhall423.revelationandroid.io.InetBuffer;
-import com.github.jamesbhall423.revelationandroid.io.InetReceiver;
-import com.github.jamesbhall423.revelationandroid.model.SelfBuffer;
 
-import java.io.ObjectInputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import android.util.Log;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     private static final int IN_PORT=4111;
-    public static final String IP_OTHER = "IP_OTHER";
+    public static final String CONNECTION_DIRECTION = "CONNECTION_DIRECTION";
+    public static final String IP_REFERENCE = "IP_REFERENCE";
+    public static final String GAME_FILE = "GAME_FILE";
+    public static final int CLIENT = 0;
+    public static final int SERVER = 1;
     private AndroidSquare[][] board;
     private BoxModel model;
     private GridLayout displayBoard;
@@ -47,13 +42,24 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_activity);
+        setContentView(R.layout.loading_screen);
         Intent intent = getIntent();
-        final String ip_extra = intent.getStringExtra(IP_OTHER);
+        final String ip_extra = intent.getStringExtra(IP_REFERENCE);
+        int connection_type = intent.getIntExtra(CONNECTION_DIRECTION,CLIENT);
+        host = (connection_type==SERVER);
+        final String game_file;
+        if (host) game_file =  intent.getStringExtra(GAME_FILE);
+        else game_file = null;
+        TextView typeView = findViewById(R.id.Description);
+        TextView ipView = findViewById(R.id.IP);
+        if (host) typeView.setText("Hosting");
+        else typeView.setText("Joining");
+        ipView.setText(ip_extra);
         Thread loader = new Thread(new Runnable() {
             @Override
             public void run() {
-                loadIP(ip_extra);
+                if (host) loadGameFile(game_file);
+                else loadIP(ip_extra);
             }
         });
         loader.start();
@@ -79,7 +85,22 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    setDetails(model,false);
+                    setDetails(model);
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+    private void loadGameFile(String game_file) {
+        try {
+            final BoxModel model = ConnectionCreator.createHost(game_file);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    setDetails(model);
                 }
             });
 
@@ -89,8 +110,8 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         }
     }
 
-    private void setDetails(BoxModel model, boolean host) {
-        this.host = host;
+    private void setDetails(BoxModel model) {
+        setContentView(R.layout.game_activity);
         this.map = model.cmap();
         this.model = model;
         model.registerUpdater(this);

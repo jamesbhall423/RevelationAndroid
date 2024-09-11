@@ -164,6 +164,8 @@ public class BoxModel {
 	 *
 	 */
 	public void distribute(CAction action) {
+		System.out.println("Distributing ");
+		System.out.println(action);
 		if (action.getClass()==DoTurn.class) {
             if (!finiteDeclares[displayPlayer]) distribute(CAction.DECLARE.create(displayPlayer,time[displayPlayer]));
 			endTimes[player()]=action.endTime();
@@ -186,6 +188,8 @@ public class BoxModel {
         return responsive;
     }
 	private void process(final CAction action) {
+		System.out.println("Processing ");
+		System.out.println(action);
 		if (endStatus!=EndStatus.ONGOING) return;
         action.process(this);
 		if (action.player()==player()&&action.typeVal()!=CAction.VAL_TURN||action.isPublic())  {

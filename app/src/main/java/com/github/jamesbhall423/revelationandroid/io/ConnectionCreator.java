@@ -10,7 +10,7 @@ import java.net.*;
 public class ConnectionCreator {
     private static final int PORT = 4111;
     public static BoxModel createHost(String gameFile) throws IOException {
-        CMap map = CMap.read(CMap.expand(gameFile));
+        CMap map = CMap.read(gameFile);
         ServerSocket welcomeSocket = new ServerSocket(PORT);
         Socket socket = welcomeSocket.accept();
         ObjectOutputStream ostream = new ObjectOutputStream(socket.getOutputStream());
