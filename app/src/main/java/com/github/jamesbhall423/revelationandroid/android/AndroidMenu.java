@@ -14,15 +14,20 @@ import java.util.List;
 import java.util.Map;
 
 public class AndroidMenu {
-    private Map<MenuItem,ModelMenuItem> correlator = new HashMap<>();
+    private Map<MenuItem,AndroidMenuItem> correlator = new HashMap<>();
     private List<AndroidMenuItem> list = new ArrayList<>();
-    public AndroidMenu(Menu menu, CMap map, BoxModel model, Activity context) {
+    public AndroidMenu(Menu menu, CMap map, BoxModel model, GameActivity context) {
         List<ModelMenuItem> items = model.menu();
         for (ModelMenuItem item: items) {
             MenuItem displayItem = menu.add(item.display());
-            list.add(new AndroidMenuItem(item,displayItem, context));
-            correlator.put(displayItem,item);
+            AndroidMenuItem next = new AndroidModelMenuItem(item,displayItem, context);
+            list.add(next);
+            correlator.put(displayItem,next);
         }
+        MenuItem notificationDisplay = menu.add("");
+        NotificationViewer notificationViewer = new NotificationViewer(model,notificationDisplay,context);
+        correlator.put(notificationDisplay,notificationViewer);
+        list.add(notificationViewer);
     }
     public void updateItems() {
         for (AndroidMenuItem item: list) item.update();

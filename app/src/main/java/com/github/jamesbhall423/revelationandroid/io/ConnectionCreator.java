@@ -27,6 +27,7 @@ public class ConnectionCreator {
         ObjectOutputStream ostream = new ObjectOutputStream(socket.getOutputStream());
         CMap map=(CMap)istream.readObject();
         ostream.writeInt(1-playerNum);
+        ostream.flush();
         return new BoxModel(map,playerNum,new InetBuffer2(istream,ostream));
     }
     private static BoxModel createBoxModel(CMap map, InetBuffer iBuffer, InetReceiver iReceiver, int player) {

@@ -7,11 +7,13 @@
         android:id="@+id/Description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ems="20"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/IP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ems="20"
         android:text="TextView" />
 </LinearLayout>

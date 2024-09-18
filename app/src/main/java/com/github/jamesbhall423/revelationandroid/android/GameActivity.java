@@ -12,14 +12,18 @@ import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayLoca
 import com.github.jamesbhall423.revelationandroid.io.ConnectionCreator;
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.BoxViewUpdater;
+import com.github.jamesbhall423.revelationandroid.model.CAction;
 import com.github.jamesbhall423.revelationandroid.model.CMap;
 
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.List;
 
 public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     public static final String PLAYER_REFERENCE = "PLAYER_REFERENCE";
@@ -33,6 +37,9 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     private BoxModel model;
     private GridLayout displayBoard;
     private LinearLayout display;
+    private ScrollView notificationDisplay;
+    private LinearLayout notificationList;
+    private int countNotifications = 0;
     private AndroidMenu androidMenu;
     private AndroidSelector selector;
     private Toolbar toolbar;
@@ -113,6 +120,8 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     }
 
     private void setDetails(BoxModel model) {
+
+        System.out.println("Setting details");
         setContentView(R.layout.game_activity);
         this.map = model.cmap();
         this.model = model;
@@ -143,6 +152,10 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
                 return true;
             }
         });
+        notificationDisplay = new ScrollView(this);
+        notificationList = new LinearLayout(this);
+        notificationList.setOrientation(LinearLayout.VERTICAL);
+        notificationDisplay.addView(notificationList);
         setMiniTitle("Pl: "+(model.player()+1));
         new Thread(new Runnable() {
 
@@ -167,6 +180,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         //setActionBar(toolbar);
 //        openOptionsMenu();
         display.invalidate();
+        System.out.println("Details set");
     }
 
     @Override
@@ -192,8 +206,9 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (model.responsive())	toolbar.setTitle(miniTitle);
-                else toolbar.setTitle(miniTitle+" (waiting)");
+                toolbar.setTitle(model.defaultTitle());
+//                if (model.responsive())	toolbar.setTitle(miniTitle);
+//                else toolbar.setTitle(miniTitle+" (waiting)");
             }
         });
     }
@@ -222,5 +237,21 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         for (RevelationDisplayLocal local: global.parts) {
             board[local.displayY()][local.displayX()].setRevelationDisplay(local);
         }
+    }
+
+    public void showNotifications(List<CAction> notifications) {
+        while (countNotifications<notifications.size()) {
+            TextView next = new TextView(this);
+            next.setText(notifications.get(countNotifications).toString());
+            notificationList.addView(next);
+            countNotifications++;
+        }
+        display.removeView(displayBoard);
+        display.addView(notificationDisplay);
+    }
+
+    public void hideNotifications() {
+        display.removeView(notificationDisplay);
+        display.addView(displayBoard);
     }
 }

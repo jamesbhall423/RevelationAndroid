@@ -1,5 +1,6 @@
 package com.github.jamesbhall423.revelationandroid.model;
 
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Queue;
 
 
 import com.github.jamesbhall423.revelationandroid.action.*;
+import static com.github.jamesbhall423.revelationandroid.model.CAction.LN;
 
 
 import static com.github.jamesbhall423.revelationandroid.model.Pathfinder.constArray;
@@ -45,6 +47,7 @@ public class BoxModel {
 	private boolean flipDisplay = false;
 	private ModelMenuItem declareVictory;
 	private CMap map;
+	private String miniTitle = "Revelation";
     public BoxModel(CMap map,int displayPlayer,CBuffer buffer, BoxViewUpdater updater) {
 		loadCMap(map, displayPlayer, buffer);
         this.updater = updater;
@@ -70,7 +73,21 @@ public class BoxModel {
 		times = new int[players.length];
 		endTimes = new int[players.length];
 		notifications.add(new StartNotification(player(),players[displayPlayer].message));
+		notifications.add(statsNotification());
 		updateDeclareResponsive();
+	}
+	private CAction statsNotification() {
+    	String message = "Stats:"+LN;
+    	message+=playerStats(0);
+    	message+=playerStats(1);
+    	return new StartNotification(player(),message);
+	}
+	private String playerStats(int player) {
+    	String out = "Player "+(player+1)+LN;
+    	out += "Reverts: "+players[player].numReverts+LN;
+    	out += "Scans: "+players[player].scans+LN;
+    	out += "Declares: "+players[player].declareVictories+LN;
+    	return out;
 	}
 	public CMap cmap() {
     	return map;
@@ -103,6 +120,7 @@ public class BoxModel {
 		this.updater = updater;
 	}
     public void step() {
+    	if (endStatus!=EndStatus.ONGOING) return;
 		change=false;
 		while (buffer.hasObjects()) {
 			CAction message = (CAction)(buffer.getObject().message);
@@ -138,6 +156,14 @@ public class BoxModel {
 			}
 		}
     }
+    public String defaultTitle() {
+    	if (endStatus == EndStatus.WIN) return miniTitle+ " VICTORY";
+    	else if (endStatus == EndStatus.LOSS) return miniTitle+" DEFEAT";
+    	else if (endStatus == EndStatus.BLOCKED) return miniTitle+" DRAW";
+    	else if (endStatus == EndStatus.OTHER_LEFT) return miniTitle+" Opponent left";
+    	else if (!responsive()) return miniTitle+" (waiting)";
+		else return miniTitle;
+	}
     private void dumpDelayed() {
         while (!delayed.isEmpty()) {
             CAction next = delayed.remove();
@@ -291,6 +317,7 @@ public class BoxModel {
 			for (int y = 0; y < board.length; y++) for (int x = 0; x < board[y].length; x++) {
 				if (board[y][x].player()!=board[y][x].getView(player())) board[y][x].setView(player(),board[y][x].player());
 			}
+			setResponsive(false);
 		}
         updater.updateGlobal();
 		updater.updateAllSquares();

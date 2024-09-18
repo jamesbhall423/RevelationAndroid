@@ -15,6 +15,6 @@ public class DoTurn extends CAction {
 	}
 	@Override
 	protected void process(BoxModel boxModel) {
-		if (boxModel.testBlocked()) boxModel.distribute(CAction.BLOCKED.create(player(),endTime()));
+		if (boxModel.testBlocked()) boxModel.distribute(CAction.BLOCKED.create(boxModel.player(),endTime()));
 	}	
 }
