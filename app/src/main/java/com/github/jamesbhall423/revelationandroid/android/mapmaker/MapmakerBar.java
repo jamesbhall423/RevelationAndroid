@@ -6,7 +6,6 @@ import android.view.MenuItem;
 
 import com.github.jamesbhall423.revelationandroid.android.ModelClickListener;
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
-import com.github.jamesbhall423.revelationandroid.model.CMap;
 import com.github.jamesbhall423.revelationandroid.model.SquareModel;
 import androidx.appcompat.widget.Toolbar;
 

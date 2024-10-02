@@ -1,7 +1,6 @@
 package com.github.jamesbhall423.revelationandroid.android;
 
 import android.content.Context;
-import android.view.MenuItem;
 import android.widget.Toolbar;
 
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;

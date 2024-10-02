@@ -4,13 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
-import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
-import com.github.jamesbhall423.revelationandroid.graphics.Colors;
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayLocal;
-import com.github.jamesbhall423.revelationandroid.graphics.SquareGraphics;
 import com.github.jamesbhall423.revelationandroid.graphics.SquarePainter;
 import com.github.jamesbhall423.revelationandroid.model.SquareClass;
 import com.github.jamesbhall423.revelationandroid.model.SquareViewUpdater;

@@ -42,8 +42,6 @@ public class SquareAction extends CAction {
 		displayY=square.displayY();
 		int contents = square.player();
 		int result=contents;
-//		boolean called = square.called(side);
-//		if (!called||!revert)&&
 		if (square.canPlace(player(),revert)) result=square.valueSide(side);
 		square.setPlayer(player(),result);
 		setResponse(contents+" to "+result);

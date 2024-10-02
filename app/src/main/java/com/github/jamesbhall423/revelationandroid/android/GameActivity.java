@@ -142,7 +142,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         display.addView(selectorView);
         display.addView(displayBoard);
         toolbar = findViewById(R.id.toolbar);
-        androidMenu = new AndroidMenu(toolbar.getMenu(),map,model,this);
+        androidMenu = new AndroidMenu(toolbar.getMenu(), model,this);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

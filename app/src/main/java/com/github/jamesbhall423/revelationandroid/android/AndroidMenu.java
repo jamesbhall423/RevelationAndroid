@@ -1,11 +1,10 @@
 package com.github.jamesbhall423.revelationandroid.android;
 
-import android.app.Activity;
+
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
-import com.github.jamesbhall423.revelationandroid.model.CMap;
 import com.github.jamesbhall423.revelationandroid.model.ModelMenuItem;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.Map;
 public class AndroidMenu {
     private Map<MenuItem,AndroidMenuItem> correlator = new HashMap<>();
     private List<AndroidMenuItem> list = new ArrayList<>();
-    public AndroidMenu(Menu menu, CMap map, BoxModel model, GameActivity context) {
+    public AndroidMenu(Menu menu, BoxModel model, GameActivity context) {
         List<ModelMenuItem> items = model.menu();
         for (ModelMenuItem item: items) {
             MenuItem displayItem = menu.add(item.display());

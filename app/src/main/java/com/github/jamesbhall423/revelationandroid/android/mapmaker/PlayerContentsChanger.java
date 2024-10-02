@@ -3,8 +3,6 @@ package com.github.jamesbhall423.revelationandroid.android.mapmaker;
 import com.github.jamesbhall423.revelationandroid.model.SquareState;
 import com.github.jamesbhall423.revelationandroid.model.SquareType;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlayerContentsChanger implements SquareStateChanger {
     private int contents;
