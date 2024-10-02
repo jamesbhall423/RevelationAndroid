@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.jamesbhall423.revelationandroid.android.GameActivity;
+import com.github.jamesbhall423.revelationandroid.android.mapmaker.MapMaker;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +59,16 @@ public class MainActivity extends AppCompatActivity {
                 gameActivity.putExtra(GameActivity.GAME_FILE,dataFolderName+MAP_FOLDER+fileName.getText().toString()+MAP_EXTENSION);
                 gameActivity.putExtra(GameActivity.CONNECTION_DIRECTION,GameActivity.SERVER);
                 startActivity(gameActivity);
+            }
+        });
+        Button mapmakerButton = findViewById(R.id.mapmaker);
+        mapmakerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mapmakerActivity = new Intent();
+                mapmakerActivity.setClass(MainActivity.this, MapMaker.class);
+                mapmakerActivity.putExtra(GameActivity.GAME_FILE,dataFolderName+MAP_FOLDER+fileName.getText().toString()+MAP_EXTENSION);
+                startActivity(mapmakerActivity);
             }
         });
     }

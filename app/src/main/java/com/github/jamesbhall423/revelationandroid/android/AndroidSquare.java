@@ -74,7 +74,9 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
 
     @Override
     public void onClick(View v) {
+        System.out.println("Hello");
         listener.doClick(modelX,modelY);
+        invalidate();
     }
 
     public void setRevelationDisplay(RevelationDisplayLocal endDisplay) {

@@ -121,7 +121,6 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
 
     private void setDetails(BoxModel model) {
 
-        System.out.println("Setting details");
         setContentView(R.layout.game_activity);
         this.map = model.cmap();
         this.model = model;
@@ -180,7 +179,6 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         //setActionBar(toolbar);
 //        openOptionsMenu();
         display.invalidate();
-        System.out.println("Details set");
     }
 
     @Override
