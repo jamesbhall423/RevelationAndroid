@@ -1,9 +1,7 @@
 package com.github.jamesbhall423.revelationandroid.android;
 
 import android.app.Activity;
-import android.content.Context;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import com.github.jamesbhall423.revelationandroid.model.SelectionItemUpdater;
 import com.github.jamesbhall423.revelationandroid.model.SquareClickType;

@@ -52,11 +52,6 @@ public class TeleporterChanger implements SquareChanger {
     }
 
     @Override
-    public void activate() {
-
-    }
-
-    @Override
     public void deactivate() {
         if (lastSquare!=null) lastSquare.setHighlight(false);
         lastSquare = null;

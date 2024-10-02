@@ -1,11 +1,8 @@
 package com.github.jamesbhall423.revelationandroid.android;
 
 import android.app.Activity;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.SquareClickType;

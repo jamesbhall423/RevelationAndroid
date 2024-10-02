@@ -16,11 +16,6 @@ public class BasicSquareChanger implements SquareChanger {
     }
 
     @Override
-    public void activate() {
-
-    }
-
-    @Override
     public void deactivate() {
 
     }
