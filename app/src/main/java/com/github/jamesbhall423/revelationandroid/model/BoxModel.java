@@ -313,6 +313,7 @@ public class BoxModel {
     public void setEndStatus(EndStatus status) {
         this.endStatus=status;
 		updater.updateEndStatus();
+		buffer.close();
 		if (endStatus==EndStatus.WIN||endStatus==EndStatus.LOSS||endStatus==EndStatus.BLOCKED) {
 			for (int y = 0; y < board.length; y++) for (int x = 0; x < board[y].length; x++) {
 				if (board[y][x].player()!=board[y][x].getView(player())) board[y][x].setView(player(),board[y][x].player());

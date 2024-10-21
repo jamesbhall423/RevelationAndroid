@@ -76,6 +76,12 @@ public class SelfBuffer implements CBuffer {
 		if (queue.offer(o)) return 0;
 		else return 1;
 	}
+
+	@Override
+	public void close() {
+
+	}
+
 	public static void setLinks(SelfBuffer[] buffers) {
 		CBuffer[][] links = new CBuffer[buffers.length][buffers.length-1];
 		for (int i = 0; i < buffers.length; i++) {

@@ -54,4 +54,5 @@ public interface CBuffer {
 	 */
 	public int sendObject(Object o, int channel);
 	public int recieveObject(ChannelledObject o);
+	void close();
 }

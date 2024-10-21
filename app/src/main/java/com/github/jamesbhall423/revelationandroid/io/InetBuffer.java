@@ -12,6 +12,7 @@ public class InetBuffer implements CBuffer, Runnable {
     private ArrayBlockingQueue<ChannelledObject> queue = new ArrayBlockingQueue<>(20);
     private ObjectInputStream in;
     private InetWriter out;
+    private boolean closed = false;
     public InetBuffer(ObjectInputStream in, ObjectOutputStream out) {
         this.in = in;
         this.out = new InetWriter(out);
@@ -43,7 +44,7 @@ public class InetBuffer implements CBuffer, Runnable {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (!closed) {
                 queue.offer(new ChannelledObject(0,in.readObject()));
             }
         } catch (ClassNotFoundException e) {
@@ -51,5 +52,16 @@ public class InetBuffer implements CBuffer, Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        out.close();
+        try {
+            in.close();
+        } catch (IOException e) {
+
+        }
+    }
+    public void close() {
+        System.out.println("Closing");
+        closed = true;
+        out.close();
     }
 }
