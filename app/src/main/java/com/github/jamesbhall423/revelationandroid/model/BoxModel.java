@@ -264,10 +264,11 @@ public class BoxModel {
 		return board[y][x];
 	}
 	public boolean onBoardModel(int x, int y) {
-		return (x>0&&y>0&&y<board.length&&x<board[y].length);
+		return (x>=0&&y>=0&&y<board.length&&x<board[y].length);
 	}
 	public boolean onDisplayModel(int x, int y) {
-		return (x>0&&y>0&&x<board.length&&y<board[x].length);
+		if (flipDisplay) return onBoardModel(y,x);
+		else return onBoardModel(x,y);
 	}
 	public SquareClass getDisplaySquare(int x, int y) {
 		if (flipDisplay) return board[x][y];

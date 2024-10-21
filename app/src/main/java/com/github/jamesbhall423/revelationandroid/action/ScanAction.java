@@ -31,9 +31,9 @@ public class ScanAction extends CAction{
 		displayY=square.displayY();
         int results[][] = new int[3][3];
         String out = "[";
-        for (int y = displayY-1; y <= displayY+1; y++) {
+        for (int y = displayY-1; y <= displayY+1; y++) if (boxModel.onDisplayModel(displayX,y)) {
             String nextPart = "[";
-            for (int x = displayX-1; x <= displayX+1; x++) {
+            for (int x = displayX-1; x <= displayX+1; x++) if (boxModel.onDisplayModel(x,y)) {
                 SquareModel next = boxModel.getDisplaySquare(x,y);
                 results[y-displayY+1][x-displayX+1] = next.player();
                 next.setView(player(),next.player());
