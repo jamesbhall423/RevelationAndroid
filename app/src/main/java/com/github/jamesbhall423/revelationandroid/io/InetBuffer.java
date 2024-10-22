@@ -1,5 +1,6 @@
 package com.github.jamesbhall423.revelationandroid.io;
 
+import com.github.jamesbhall423.revelationandroid.model.CAction;
 import com.github.jamesbhall423.revelationandroid.model.CBuffer;
 import com.github.jamesbhall423.revelationandroid.model.ChannelledObject;
 
@@ -51,6 +52,8 @@ public class InetBuffer implements CBuffer, Runnable {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+            queue.offer(new ChannelledObject(0, CAction.EXIT));
+            System.out.println("Exit added to queue");
         }
         out.close();
         try {

@@ -124,7 +124,8 @@ public class BoxModel {
 		change=false;
 		while (buffer.hasObjects()) {
 			CAction message = (CAction)(buffer.getObject().message);
-			queue.add(message);
+			if (message==CAction.EXIT) process(message);
+			else queue.add(message);
 		} 
 		CAction action = queue.peek();
 		int top = CAction.VAL_TURN;
