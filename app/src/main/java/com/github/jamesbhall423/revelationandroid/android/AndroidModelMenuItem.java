@@ -9,11 +9,11 @@ public class AndroidModelMenuItem implements AndroidMenuItem {
     private ModelMenuItem modelItem;
     private MenuItem androidItem;
     private Activity context;
-    public AndroidModelMenuItem(ModelMenuItem modelItem, MenuItem androidItem, Activity context) {
+    public AndroidModelMenuItem(ModelMenuItem modelItem, MenuItem androidItem, GameActivity context) {
         this.androidItem = androidItem;
         this.modelItem = modelItem;
         this.context = context;
-        modelItem.setUpdater(this);
+        modelItem.setUpdater(context.viewModel().wrapSelectionItemUpdater(context,this));
         update();
     }
 

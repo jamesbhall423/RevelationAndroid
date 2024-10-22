@@ -15,7 +15,7 @@ public class AndroidSelector implements ModelClickListener {
     private HashMap<Integer, SquareClickType> map = new HashMap<>();
     private List<AndroidSelectionItem> list = new ArrayList<>();
     private RadioGroup view;
-    public AndroidSelector(RadioGroup view, BoxModel model, Activity context) {
+    public AndroidSelector(RadioGroup view, BoxModel model, GameActivity context) {
         this.view = view;
         final List<SquareClickType> selectors = SquareClickType.clickTypes(model);
         for (SquareClickType clickType: selectors) {

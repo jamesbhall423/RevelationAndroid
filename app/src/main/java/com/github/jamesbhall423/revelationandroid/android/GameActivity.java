@@ -22,6 +22,8 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     public static final String GAME_FILE = "GAME_FILE";
     public static final int CLIENT = 0;
     public static final int SERVER = 1;
+    private boolean running = true;
     private AndroidSquare[][] board;
     private BoxModel model;
     private GridLayout displayBoard;
@@ -46,6 +49,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     private boolean host;
     private CMap map;
     private String miniTitle;
+    private MainViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,15 +68,27 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         if (host) typeView.setText("Hosting");
         else typeView.setText("Joining");
         ipView.setText(ip_extra);
-        Thread loader = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (host) loadGameFile(game_file);
-                else loadIP(ip_extra,player);
-            }
-        });
-        loader.start();
-
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        if (viewModel.boxModel() != null) setDetails(viewModel.boxModel());
+        else {
+            Thread loader = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Creating network connection");
+                    if (host) viewModel.loadGameFile(GameActivity.this,game_file);
+                    else viewModel.loadIP(GameActivity.this,ip_extra,player);
+                }
+            });
+            loader.start();
+        }
+    }
+    public MainViewModel viewModel() {
+        return viewModel;
+    }
+    @Override
+    public void onDestroy() {
+        running = false;
+        super.onDestroy();
     }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -88,7 +104,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
 //        return true;
 //    }
 
-    private void loadIP(String ip_extra, int player) {
+    public void loadIP(String ip_extra, int player) {
         try {
             final BoxModel model = ConnectionCreator.createClient(ip_extra, player);
             runOnUiThread(new Runnable() {
@@ -103,7 +119,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
             System.exit(1);
         }
     }
-    private void loadGameFile(String game_file) {
+    public void loadGameFile(String game_file) {
         try {
             final BoxModel model = ConnectionCreator.createHost(game_file);
             runOnUiThread(new Runnable() {
@@ -119,12 +135,12 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         }
     }
 
-    private void setDetails(BoxModel model) {
+    public void setDetails(BoxModel model) {
 
         setContentView(R.layout.game_activity);
         this.map = model.cmap();
         this.model = model;
-        model.registerUpdater(this);
+        model.registerUpdater(viewModel.wrapBoxViewUpdater(this,this));
         RadioGroup selectorView = new RadioGroup(this);
         selector = new AndroidSelector(selectorView,model,this);
         displayBoard = new GridLayout(this);
@@ -136,7 +152,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         display.setOrientation(LinearLayout.VERTICAL);
         board = new AndroidSquare[model.displayHeight()][model.displayWidth()];
         for (int y = 0; y < model.displayHeight(); y++) for (int x = 0; x < model.displayWidth(); x++) {
-            board[y][x] = new AndroidSquare(this,model.getDisplaySquare(x,y),selector,model.displayHeight());
+            board[y][x] = new AndroidSquare(this,viewModel,model.getDisplaySquare(x,y),selector,model.displayHeight());
             displayBoard.addView(board[y][x]);
         }
         display.addView(selectorView);
@@ -161,15 +177,14 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
             @Override
             public void run() {
                 try {
-                    while (true) {
-                        Thread.sleep(100);
+                    while (running) {
                         GameActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                GameActivity.this.model.step();
-//                                updateAllSquares();
+                                if (running) GameActivity.this.model.step();
                             }
                         });
+                        if (running) Thread.sleep(100);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -183,6 +198,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
 
     @Override
     public void updateAllSquares() {
+        if (board==null) return;
         for (int y = 0; y < board.length; y++) for (int x = 0; x < board[y].length; x++) {
             board[y][x].invalidate();
         }
@@ -190,8 +206,8 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     @Override
     public void updateGlobal() {
         updateTitle();
-        androidMenu.updateItems();
-        selector.updateItems();
+        if (androidMenu!=null) androidMenu.updateItems();
+        if (selector!=null) selector.updateItems();
     }
     public void setMiniTitle(String title) {
         miniTitle=title;
@@ -204,9 +220,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                toolbar.setTitle(model.defaultTitle());
-//                if (model.responsive())	toolbar.setTitle(miniTitle);
-//                else toolbar.setTitle(miniTitle+" (waiting)");
+                if(toolbar!=null) toolbar.setTitle(model.defaultTitle());
             }
         });
     }

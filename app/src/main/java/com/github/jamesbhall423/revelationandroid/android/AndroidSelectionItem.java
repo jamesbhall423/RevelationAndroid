@@ -11,12 +11,11 @@ public class AndroidSelectionItem implements SelectionItemUpdater {
     private RadioButton view;
     private SquareClickType clickType;
     private Activity context;
-    public AndroidSelectionItem(RadioButton view, SquareClickType clickType, Activity context) {
+    public AndroidSelectionItem(RadioButton view, SquareClickType clickType, GameActivity context) {
         this.view = view;
         this.clickType = clickType;
-        clickType.setUpdater(this);
         this.context = context;
-        update();
+        clickType.setUpdater(context.viewModel().wrapSelectionItemUpdater(context,this));
     }
 
     @Override

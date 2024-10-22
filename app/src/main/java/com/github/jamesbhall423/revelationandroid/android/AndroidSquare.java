@@ -6,6 +6,8 @@ import android.graphics.Paint;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayLocal;
 import com.github.jamesbhall423.revelationandroid.graphics.SquarePainter;
 import com.github.jamesbhall423.revelationandroid.model.SquareClass;
@@ -20,22 +22,23 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     private static final int SIZE = 32;
     private int boardSize;
     Paint paint = new Paint();
-    public AndroidSquare(Context context, SquareClass square,ModelClickListener listener, int boardSize) {
+    public AndroidSquare(AppCompatActivity context, MainViewModel viewModel, SquareClass square, ModelClickListener listener, int boardSize) {
         super(context);
         this.boardSize = boardSize;
         modelX = square.X;
         modelY = square.Y;
         model = square;
-        model.registerUpdater(this);
-        setOnClickListener(this);
         this.listener = listener;
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 1.0f
         );
-       setLayoutParams(param);
-       setLayoutParams(param);
+        setLayoutParams(param);
+        setLayoutParams(param);
+        if (viewModel!=null) model.registerUpdater(viewModel.wrapSquareViewUpdater(context,this,modelX,modelY));
+        else model.registerUpdater(this);
+        setOnClickListener(this);
     }
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
