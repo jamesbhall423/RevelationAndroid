@@ -3,9 +3,9 @@ package com.github.jamesbhall423.revelationandroid;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,7 +14,6 @@ import com.github.jamesbhall423.revelationandroid.android.GameActivity;
 import com.github.jamesbhall423.revelationandroid.android.mapmaker.MapMaker;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;

@@ -3,6 +3,7 @@ package com.github.jamesbhall423.revelationandroid.android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
@@ -54,6 +55,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.loading_screen);
         Intent intent = getIntent();
         final String ip_extra = intent.getStringExtra(IP_REFERENCE);

@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
+import com.github.jamesbhall423.revelationandroid.model.CAction;
 import com.github.jamesbhall423.revelationandroid.model.ModelMenuItem;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class AndroidMenu {
     private List<AndroidMenuItem> list = new ArrayList<>();
     public AndroidMenu(Menu menu, BoxModel model, GameActivity context) {
         List<ModelMenuItem> items = model.menu();
-        for (ModelMenuItem item: items) {
+        for (ModelMenuItem item: items) if (item.getAction()!= CAction.EXIT) {
             MenuItem displayItem = menu.add(item.display());
             AndroidMenuItem next = new AndroidModelMenuItem(item,displayItem, context);
             list.add(next);

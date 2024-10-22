@@ -35,7 +35,7 @@ public abstract class SelectionItem {
         }
     }
     public void updateGraphics() {
-        updater.update();
+        if (updater!=null) updater.update();
     }
     public void doClick(Object details) {
         if (enabled()) {
