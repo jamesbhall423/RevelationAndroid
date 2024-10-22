@@ -38,6 +38,7 @@ public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
     private PlayerRecorder player1Recorder;
     private PlayerRecorder player2Recorder;
     private Player[] players;
+    private boolean saved = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
             try {
                 CMap map = CMap.read(gameFile);
                 model = new BoxModel(map, 0, null);
+                players = map.players;
             }  catch (Exception e) {
                 e.printStackTrace();
                 System.exit(1);
@@ -98,6 +100,17 @@ public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
         return new CMap(states,players);
     }
     public void saveAndExit() {
+        if (save()) {
+            saved = true;
+            System.exit(0);
+        }
+    }
+    @Override
+    public void onStop() {
+        if (!saved) save();
+        super.onStop();
+    }
+    public boolean save() {
         player1Recorder.record();
         player2Recorder.record();
         try {
@@ -105,11 +118,11 @@ public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(writeTo));
             out.writeObject(map());
             out.close();
-            System.exit(0);
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this,"Save Failed",Toast.LENGTH_SHORT).show();
+            return false;
         }
-
     }
 }
