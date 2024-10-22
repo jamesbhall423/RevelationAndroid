@@ -36,6 +36,8 @@ public class ScanAction extends CAction{
             for (int x = displayX-1; x <= displayX+1; x++) if (boxModel.onDisplayModel(x,y)) {
                 SquareModel next = boxModel.getDisplaySquare(x,y);
                 results[y-displayY+1][x-displayX+1] = next.player();
+                nextPart+=next.player();
+                if (x<=displayX) nextPart+=", ";
                 next.setView(player(),next.player());
             }
             out+=nextPart+"]";
