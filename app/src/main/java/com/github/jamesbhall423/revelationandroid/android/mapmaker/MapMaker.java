@@ -107,8 +107,8 @@ public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
     }
     @Override
     public void onStop() {
-        if (!saved) save();
         super.onStop();
+        if (!saved) save();
     }
     public boolean save() {
         player1Recorder.record();
