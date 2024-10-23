@@ -17,7 +17,7 @@ public class ConnectionCreator {
         ostream.writeObject(map);
         int playerNum = istream.readInt();
         welcomeSocket.close();
-        return new BoxModel(map,playerNum,new InetBuffer(istream,ostream));
+        return new BoxModel(map,playerNum,new InetBuffer(istream,ostream,socket));
     }
     public static BoxModel createClient(String hostIP, int playerNum) throws IOException, ClassNotFoundException {
         InetAddress address = InetAddress.getAllByName(hostIP)[0];
@@ -27,6 +27,6 @@ public class ConnectionCreator {
         CMap map=(CMap)istream.readObject();
         ostream.writeInt(1-playerNum);
         ostream.flush();
-        return new BoxModel(map,playerNum,new InetBuffer(istream,ostream));
+        return new BoxModel(map,playerNum,new InetBuffer(istream,ostream,socket));
     }
 }

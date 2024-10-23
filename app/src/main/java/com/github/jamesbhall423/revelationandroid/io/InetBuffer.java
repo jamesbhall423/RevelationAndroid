@@ -1,5 +1,6 @@
 package com.github.jamesbhall423.revelationandroid.io;
 
+import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.CAction;
 import com.github.jamesbhall423.revelationandroid.model.CBuffer;
 import com.github.jamesbhall423.revelationandroid.model.ChannelledObject;
@@ -7,6 +8,7 @@ import com.github.jamesbhall423.revelationandroid.model.ChannelledObject;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class InetBuffer implements CBuffer, Runnable {
@@ -14,9 +16,11 @@ public class InetBuffer implements CBuffer, Runnable {
     private ObjectInputStream in;
     private InetWriter out;
     private boolean closed = false;
-    public InetBuffer(ObjectInputStream in, ObjectOutputStream out) {
+    private ClosingLock lock;
+    public InetBuffer(ObjectInputStream in, ObjectOutputStream out, Socket socket) {
         this.in = in;
-        this.out = new InetWriter(out);
+        lock = new ClosingLock(2,socket);
+        this.out = new InetWriter(out,lock);
         new Thread(this).start();
     }
     @Override
@@ -52,15 +56,10 @@ public class InetBuffer implements CBuffer, Runnable {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-            queue.offer(new ChannelledObject(0, CAction.EXIT));
+            queue.offer(new ChannelledObject(0, CAction.EXIT.create(-1,-1)));
             System.out.println("Exit added to queue");
         }
-        out.close();
-        try {
-            in.close();
-        } catch (IOException e) {
-
-        }
+        lock.close();
     }
     public void close() {
         System.out.println("Closing");

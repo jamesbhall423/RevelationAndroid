@@ -13,4 +13,8 @@ public class Exit extends CAction {
 	protected void process(BoxModel boxModel) {
 		if (boxModel.getEndStatus()==EndStatus.ONGOING) boxModel.setEndStatus(EndStatus.OTHER_LEFT);
 	}
+	@Override
+	public int typeVal() {
+		return VAL_MIN;
+	}
 }

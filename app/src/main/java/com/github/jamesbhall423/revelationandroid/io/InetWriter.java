@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class InetWriter extends Thread {
+    private final ClosingLock lock;
     private ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(20);
     private ObjectOutputStream ostream;
     private boolean closed = false;
@@ -26,18 +27,15 @@ public class InetWriter extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            ostream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        lock.close();
     }
     public void writeObject(Object o) {
         queue.offer(o);
         interrupt();
     }
-    public InetWriter(ObjectOutputStream ostream) {
+    public InetWriter(ObjectOutputStream ostream, ClosingLock lock) {
         this.ostream = ostream;
+        this.lock = lock;
         start();
     }
     public void close() {

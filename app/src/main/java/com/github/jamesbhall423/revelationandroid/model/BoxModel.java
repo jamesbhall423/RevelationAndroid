@@ -76,7 +76,8 @@ public class BoxModel {
 		updateDeclareResponsive();
 	}
 	private CAction statsNotification() {
-    	String message = players[displayPlayer].message+LN;
+        String message = "";
+    	if (displayPlayer>=0) message = players[displayPlayer].message+LN;
     	message += "Stats:"+LN;
     	message+=playerStats(0);
     	message+=playerStats(1);
@@ -124,8 +125,11 @@ public class BoxModel {
 		change=false;
 		while (buffer.hasObjects()) {
 			CAction message = (CAction)(buffer.getObject().message);
-			if (message==CAction.EXIT) process(message);
-			else queue.add(message);
+			if (message.getClass()==Exit.class) {
+			    message = message.create(1-displayPlayer,time[1-displayPlayer]+1);
+            }
+			if (message.getStartTime()>time[message.player()]) time[message.player()]=message.getStartTime();
+			queue.add(message);
 		} 
 		CAction action = queue.peek();
 		int top = CAction.VAL_TURN;
