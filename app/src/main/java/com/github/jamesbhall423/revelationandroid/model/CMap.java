@@ -59,11 +59,12 @@ public class CMap implements Cloneable, Serializable {
 		return out;
 	}
 
-    public SquareClass[][] createBoard(boolean flip) {
+    public SquareClass[][] createBoard(boolean flip, int displayPlayer) {
         SquareClass[][] out = new SquareClass[squares.length][squares[0].length];
 		for (int y = 0; y < out.length; y++) for (int x = 0; x < out[y].length; x++) {
 			out[y][x] = new SquareClass(x,y,squares[y][x]);
 			out[y][x].setFlipDisplay(flip);
+			out[y][x].setGlobalPlayerIndex(displayPlayer);
 		}
 		return out;
     }

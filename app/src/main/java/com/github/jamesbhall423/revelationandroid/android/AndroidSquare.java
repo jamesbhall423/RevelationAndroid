@@ -8,12 +8,19 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.jamesbhall423.revelationandroid.graphics.Disturbance;
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayLocal;
+import com.github.jamesbhall423.revelationandroid.graphics.ShakeGraphics;
 import com.github.jamesbhall423.revelationandroid.graphics.SquarePainter;
 import com.github.jamesbhall423.revelationandroid.model.SquareClass;
 import com.github.jamesbhall423.revelationandroid.model.SquareViewUpdater;
 
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class AndroidSquare extends View implements SquareViewUpdater, View.OnClickListener {
+    Timer timer = new Timer();
     private final ModelClickListener listener;
     private int modelX;
     private int modelY;
@@ -21,9 +28,13 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     private RevelationDisplayLocal endDisplay;
     private static final int SIZE = 32;
     private int boardSize;
-    Paint paint = new Paint();
+    private Paint paint = new Paint();
+    private ShakeGraphics graphics;
+    private AndroidGraphics canvasHolder;
     public AndroidSquare(AppCompatActivity context, MainViewModel viewModel, SquareClass square, ModelClickListener listener, int boardSize) {
         super(context);
+        canvasHolder = new AndroidGraphics(null,paint);
+        graphics = new ShakeGraphics(canvasHolder);
         this.boardSize = boardSize;
         modelX = square.X;
         modelY = square.Y;
@@ -52,15 +63,32 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        AndroidGraphics graphics = new AndroidGraphics(canvas,paint);
+        canvasHolder.setCanvas(canvas);
         SquarePainter.paint(model,graphics,endDisplay);
     }
 
     @Override
     public void update(int x, int y) {
-        invalidate();
-    }
 
+        //invalidate();
+        paintAnimation();
+    }
+    public void paintAnimationSlice(Disturbance d) {
+        d.setShake(graphics);
+        postInvalidate();
+    }
+    public void paintAnimation() {
+        List<Disturbance> animation = Disturbance.shakeAnimation();
+        for (final Disturbance next: animation) {
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    paintAnimationSlice(next);
+                }
+            },next.millis());
+        }
+    }
     @Override
     public void onClick(View v) {
         System.out.println("Hello");

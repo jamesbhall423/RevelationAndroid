@@ -13,6 +13,7 @@ public class SquareClass implements SquareModel, Serializable {
 	public final int X;
 	public final int Y;
 	private boolean flipDisplay = false;
+	private int globalPlayerIndex;
     public void registerUpdater(SquareViewUpdater updater) {
         this.updater = updater;
     }
@@ -31,6 +32,9 @@ public class SquareClass implements SquareModel, Serializable {
 		this.state = state;
 		view[0]=state.contents;
 		view[1]=state.contents;
+	}
+	public void setGlobalPlayerIndex(int globalPlayerIndex) {
+		this.globalPlayerIndex = globalPlayerIndex;
 	}
 	public void setFlipDisplay(boolean flipDisplay) {
 		this.flipDisplay = flipDisplay;
@@ -105,7 +109,7 @@ public class SquareClass implements SquareModel, Serializable {
 			state.contents=-1;
 			view[callingPlayer]=-1;
 		}
-		updater.update(X,Y);
+		if (callingPlayer==globalPlayerIndex) updater.update(X,Y);
 	}
 
 	/**
@@ -198,7 +202,7 @@ public class SquareClass implements SquareModel, Serializable {
 	@Override
 	public void setView(int callingPlayer, int observed) {
 		view[callingPlayer]=observed;
-		updater.update(X,Y);
+		if (callingPlayer==globalPlayerIndex) updater.update(X,Y);
 	}
 	@Override
 	public void setHighlight(boolean highlight) {
@@ -258,7 +262,7 @@ public class SquareClass implements SquareModel, Serializable {
 	public void setPlayer(int callingPlayer, int player) {
 		view[callingPlayer]=player;
 		state.contents=player;
-		updater.update(X,Y);
+		if (callingPlayer==globalPlayerIndex) updater.update(X,Y);
 	}
 	@Override
 	public void updatePlayer(int player) {

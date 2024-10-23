@@ -55,7 +55,7 @@ public class BoxModel {
 	private void loadCMap(CMap map,int displayPlayer,CBuffer buffer) {
     	this.map = map;
 		flipDisplay = displayPlayer>0;
-		board = map.createBoard(flipDisplay);
+		board = map.createBoard(flipDisplay, displayPlayer);
         this.displayPlayer = displayPlayer;
         this.buffer = buffer;
         this.blocked = new boolean[map.players.length];
