@@ -72,12 +72,12 @@ public class BoxModel {
 		time = new int[map.players.length];
 		times = new int[players.length];
 		endTimes = new int[players.length];
-		notifications.add(new StartNotification(player(),players[displayPlayer].message));
 		notifications.add(statsNotification());
 		updateDeclareResponsive();
 	}
 	private CAction statsNotification() {
-    	String message = "Stats:"+LN;
+    	String message = players[displayPlayer].message+LN;
+    	message += "Stats:"+LN;
     	message+=playerStats(0);
     	message+=playerStats(1);
     	return new StartNotification(player(),message);
