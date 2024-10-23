@@ -254,10 +254,14 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     }
 
     public void showNotifications(List<CAction> notifications) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        layoutParams.setMargins(30, 20, 30, 0);
         while (countNotifications<notifications.size()) {
             TextView next = new TextView(this);
             next.setText(notifications.get(countNotifications).toString());
-            notificationList.addView(next);
+            notificationList.addView(next, layoutParams);
             countNotifications++;
         }
         display.removeView(displayBoard);
