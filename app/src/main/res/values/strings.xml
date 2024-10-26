@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">RevelationAndroid</string>
+    <string name="app_name">Revelation</string>
+    <string name="preference_file_key">com.github.jamesbhall423.RevelationAndroid.PREFERENCE_FILE_KEY</string>
+
 </resources>

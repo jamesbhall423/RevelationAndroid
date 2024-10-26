@@ -12,6 +12,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".android.GameActivity"></activity>
         <activity android:name=".android.mapmaker.MapMaker"></activity>
+        <activity android:name=".FileViewer"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

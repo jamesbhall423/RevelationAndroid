@@ -1,13 +1,20 @@
 package com.github.jamesbhall423.revelationandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.documentfile.provider.DocumentFile;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.jamesbhall423.revelationandroid.android.GameActivity;
@@ -20,87 +27,67 @@ import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String MAP_FOLDER = "/";
-    private static final String MAP_EXTENSION = ".cmap";
+    public static final String MAP_EXTENSION = ".cmap";
+    private static final String IP_REFERENCE = "LAST_IP";
+    private static final String DEFAULT_IP = "IP Address";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         AppInitializer.run(this);
         setContentView(R.layout.activity_main);
-        Button join = findViewById(R.id.join);
-        final EditText ip = findViewById(R.id.address);
-        final EditText playerInput = findViewById(R.id.playerInput);
-        join.setOnClickListener(new View.OnClickListener() {
+        EditText ip = findViewById(R.id.address);
+        ip.setText(sharedPref.getString(IP_REFERENCE,DEFAULT_IP));
+        Button joinP1 = findViewById(R.id.joinP1);
+        joinP1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gameActivity = new Intent();
-                gameActivity.setClass(MainActivity.this, GameActivity.class);
-                gameActivity.putExtra(GameActivity.IP_REFERENCE,ip.getText().toString());
-                gameActivity.putExtra(GameActivity.PLAYER_REFERENCE,Integer.parseInt(playerInput.getText().toString()));
-                gameActivity.putExtra(GameActivity.CONNECTION_DIRECTION,GameActivity.CLIENT);
-                startActivity(gameActivity);
+                joinIP(1);
+            }
+        });
+        Button joinP2 = findViewById(R.id.joinP2);
+        joinP2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                joinIP(2);
             }
         });
         Button hoster = findViewById(R.id.host);
-        final TextView displayIP = findViewById(R.id.thisIP);
-        final String IP_ADDRESS = getIPAddress(true);
-        final EditText fileName = findViewById(R.id.fileName);
-        displayIP.setText(IP_ADDRESS);
-        File fileDir = getFilesDir();
-        final String dataFolderName = fileDir.getPath();
         hoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gameActivity = new Intent();
-                gameActivity.setClass(MainActivity.this, GameActivity.class);
-                gameActivity.putExtra(GameActivity.IP_REFERENCE,IP_ADDRESS);
-                gameActivity.putExtra(GameActivity.GAME_FILE,dataFolderName+MAP_FOLDER+fileName.getText().toString()+MAP_EXTENSION);
-                gameActivity.putExtra(GameActivity.CONNECTION_DIRECTION,GameActivity.SERVER);
-                startActivity(gameActivity);
+                openFile(false);
             }
         });
         Button mapmakerButton = findViewById(R.id.mapmaker);
         mapmakerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mapmakerActivity = new Intent();
-                mapmakerActivity.setClass(MainActivity.this, MapMaker.class);
-                mapmakerActivity.putExtra(GameActivity.GAME_FILE,dataFolderName+MAP_FOLDER+fileName.getText().toString()+MAP_EXTENSION);
-                startActivity(mapmakerActivity);
+                openFile(true);
             }
         });
     }
+    public void joinIP(int player) {
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+        SharedPreferences.Editor ipEdit = sharedPref.edit();
+        EditText ip = findViewById(R.id.address);
+        ipEdit.putString(IP_REFERENCE,ip.getText().toString());
+        ipEdit.apply();
+        Intent gameActivity = new Intent();
+        gameActivity.setClass(MainActivity.this, GameActivity.class);
+        gameActivity.putExtra(GameActivity.IP_REFERENCE,ip.getText().toString());
+        gameActivity.putExtra(GameActivity.PLAYER_REFERENCE,player);
+        gameActivity.putExtra(GameActivity.CONNECTION_DIRECTION,GameActivity.CLIENT);
+        startActivity(gameActivity);
+    }
 
-    /**
-     * Get IP address from first non-localhost interface
-     * @param useIPv4   true=return ipv4, false=return ipv6
-     * @return  address or empty string
-     */
-    public static String getIPAddress(boolean useIPv4) {
-        try {
-            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
-            for (NetworkInterface intf : interfaces) {
-                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
-                for (InetAddress addr : addrs) {
-                    if (!addr.isLoopbackAddress()) {
-                        String sAddr = addr.getHostAddress();
-                        //boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr);
-                        boolean isIPv4 = sAddr.indexOf(':')<0;
 
-                        if (useIPv4) {
-                            if (isIPv4)
-                                return sAddr;
-                        } else {
-                            if (!isIPv4) {
-                                int delim = sAddr.indexOf('%'); // drop ip6 zone suffix
-                                return delim<0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase();
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception ignored) { } // for now eat exceptions
-        return "";
+    private void openFile(boolean isMapmaker) {
+        Intent intent = new Intent();
+        intent.setClass(this,FileViewer.class);
+        intent.putExtra(FileViewer.FLAG_MAPMAKER,isMapmaker);
+        intent.putExtra(FileViewer.PATH_LOCATION,getFilesDir().getAbsolutePath());
+        startActivity(intent);
     }
 }
