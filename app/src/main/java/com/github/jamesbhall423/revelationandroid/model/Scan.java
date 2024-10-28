@@ -5,8 +5,8 @@ import com.github.jamesbhall423.revelationandroid.action.*;
 
 public class Scan extends SquareClickType {
 
-    public Scan(int number, BoxModel model, boolean alwaysActionable) {
-        super("scan", number, model, alwaysActionable);
+    public Scan(int number, BoxModel model, boolean alwaysActionable, String description) {
+        super("scan", number, model, alwaysActionable, description);
     }
 
     @Override

@@ -21,7 +21,7 @@ public abstract class SelectionItem {
         return number;
     }
     public String display() {
-        if (number>0) return actionName+"-"+number;
+        if (number>0) return actionName+" "+number+"x ";
         else return actionName;
     }
     public boolean enabled() {

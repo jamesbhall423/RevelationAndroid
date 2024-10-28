@@ -3,8 +3,8 @@ package com.github.jamesbhall423.revelationandroid.model;
 public class SquareClick extends SquareClickType {
     private boolean revert;
 
-    public SquareClick(String name, int number, BoxModel model, boolean alwaysActionable, boolean revert) {
-        super(name, number, model, alwaysActionable);
+    public SquareClick(String name, int number, BoxModel model, boolean alwaysActionable, boolean revert, String description) {
+        super(name, number, model, alwaysActionable, description);
         this.revert = revert;
     }
 

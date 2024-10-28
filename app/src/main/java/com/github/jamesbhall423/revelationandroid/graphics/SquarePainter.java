@@ -51,6 +51,14 @@ public class SquarePainter {
 		setPlayerColor(model,g,player);
 		if (endDisplay!=null) drawRevelationDisplay(model,g,endDisplay.display(model),width,height);
 		else if (model.getView(player)!=0) g.fillEllipse((int)width/3,(int)height/3,(int)width/3,(int)height/3);
+		String turns = null;
+		if (model.time()>1) turns = ""+model.time();
+		if (turns!=null) {
+			g.setColor(Colors.black);
+			g.setFontSize((int)(width/3.5));
+			g.setFontPlain();
+			g.drawString(turns,(int) (2*width/3),(int) (0.9*height));
+		}
 	}
 	private static void drawRevelationDisplay(SquareClass model, SquareGraphics g, String endDisplay, double width, double height) {
 		g.setFontSize((int)width/2);

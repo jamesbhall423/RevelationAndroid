@@ -23,12 +23,14 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
 public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
+    public static final int DISPLAY_MAIN = 0;
+    public static final int DISPLAY_NOTIFICATIONS = 1;
+    public static final int DISPLAY_INSTRUCTIONS = 2;
     public static final String PLAYER_REFERENCE = "PLAYER_REFERENCE";
     private static final int IN_PORT=4111;
     public static final String CONNECTION_DIRECTION = "CONNECTION_DIRECTION";
@@ -43,6 +45,8 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     private LinearLayout display;
     private ScrollView notificationDisplay;
     private LinearLayout notificationList;
+    private TextView instructionsDisplay;
+    private ScrollView instructionsScroll;
     private int countNotifications = 0;
     private AndroidMenu androidMenu;
     private AndroidSelector selector;
@@ -51,6 +55,8 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     private CMap map;
     private String miniTitle;
     private MainViewModel viewModel;
+    private RadioGroup selectorView;
+    private LinearLayout.LayoutParams listLayoutParams;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,10 +146,19 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     public void setDetails(BoxModel model) {
 
         setContentView(R.layout.game_activity);
+        listLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        listLayoutParams.setMargins(30, 20, 30, 0);
         this.map = model.cmap();
         this.model = model;
+        instructionsDisplay = new TextView(this);
+        instructionsDisplay.setText(model.instructions());
+        instructionsDisplay.setLayoutParams(listLayoutParams);
+        instructionsScroll = new ScrollView(this);
+        instructionsScroll.addView(instructionsDisplay);
         model.registerUpdater(viewModel.wrapBoxViewUpdater(this,this));
-        RadioGroup selectorView = new RadioGroup(this);
+        selectorView = new RadioGroup(this);
         selector = new AndroidSelector(selectorView,model,this);
         displayBoard = new GridLayout(this);
         displayBoard.setColumnCount(model.displayWidth());
@@ -254,22 +269,32 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     }
 
     public void showNotifications(List<CAction> notifications) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        layoutParams.setMargins(30, 20, 30, 0);
         while (countNotifications<notifications.size()) {
             TextView next = new TextView(this);
             next.setText(notifications.get(countNotifications).toString());
-            notificationList.addView(next, layoutParams);
+            notificationList.addView(next, listLayoutParams);
             countNotifications++;
         }
-        display.removeView(displayBoard);
+        display.removeAllViews();
         display.addView(notificationDisplay);
     }
 
-    public void hideNotifications() {
-        display.removeView(notificationDisplay);
+    public void showMain() {
+        display.addView(selectorView);
         display.addView(displayBoard);
+    }
+    public void showDisplay(int displayNumber) {
+        display.removeAllViews();
+        switch (displayNumber) {
+            case DISPLAY_INSTRUCTIONS:
+                display.addView(instructionsScroll);
+                break;
+            case DISPLAY_NOTIFICATIONS:
+                showNotifications(model.notifications());
+                break;
+            default:
+                showMain();
+        }
     }
 }

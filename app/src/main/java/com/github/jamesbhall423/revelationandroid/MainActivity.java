@@ -1,6 +1,7 @@
 package com.github.jamesbhall423.revelationandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
         AppInitializer.run(this);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Revelation");
         EditText ip = findViewById(R.id.address);
         ip.setText(sharedPref.getString(IP_REFERENCE,DEFAULT_IP));
         Button joinP1 = findViewById(R.id.joinP1);

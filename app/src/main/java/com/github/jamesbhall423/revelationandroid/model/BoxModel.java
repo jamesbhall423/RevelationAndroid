@@ -47,7 +47,6 @@ public class BoxModel {
 	private boolean flipDisplay = false;
 	private ModelMenuItem declareVictory;
 	private CMap map;
-	private String miniTitle = "Revelation";
     public BoxModel(CMap map,int displayPlayer,CBuffer buffer, BoxViewUpdater updater) {
 		loadCMap(map, displayPlayer, buffer);
         this.updater = updater;
@@ -162,12 +161,58 @@ public class BoxModel {
 		}
     }
     public String defaultTitle() {
+    	String miniTitle = "Turn "+endTimes[player()];
     	if (endStatus == EndStatus.WIN) return miniTitle+ " VICTORY";
     	else if (endStatus == EndStatus.LOSS) return miniTitle+" DEFEAT";
     	else if (endStatus == EndStatus.BLOCKED) return miniTitle+" DRAW";
     	else if (endStatus == EndStatus.OTHER_LEFT) return miniTitle+" Opponent left";
     	else if (!responsive()) return miniTitle+" (waiting)";
 		else return miniTitle;
+	}
+	public String instructions() {
+    	String objective = "Objective:"+LN;
+    	objective+= "Connect the left to right sides with blue dots and declare victory."+LN;
+    	objective+= "Prevent the top and bottom sides from being connected with purple dots"+LN;
+    	objective+= "Two squares are connected when they square a side (diagonals do not count) or the same teleporter number (top-left blue square)"+LN;
+    	objective+= "You win if - "+LN;
+		objective+= " - You have connected the left and right sides of the board and declared victory"+LN;
+		objective+= " - Your opponent runs out of declare victories"+LN;
+		objective+= "You lose if"+LN;
+		objective+= " - Your opponent has connected the left and right sides of the board and declared victory"+LN;
+		objective+= " - You run out of declare victories"+LN;
+		objective+= "The game draws if"+LN;
+		objective+= " - Both sides know they cannot win by declaring victory"+LN;
+		String actions = "Actions:"+LN;
+		actions += "You have four actions: place, scan, revert and declare victory"+LN;
+		actions += "Actions that do not end the game are secret"+LN;
+		actions += "However, in addition to changing the board, actions give information about the board state"+LN;
+		actions += "Some actions have a limited number of uses"+LN;
+		actions += "Information about the number of uses for both players, and the history of your actions can be found in the notification log"+LN;
+		actions += "Place - "+LN;
+		actions += " - Fills the square with your token, if no token is present"+LN;
+		actions += " - Reveals the true state of the underlying square"+LN;
+		actions += " - Takes time given by the terrain of the square"+LN;
+		actions += "Revert - "+LN;
+		actions += " - Can only be placed in locations you have not placed or found a token"+LN;
+		actions += " - If the opponent had a token in that spot, you now have a token in that spot, and the opponent has nothing"+LN;
+		actions += " - If the square was empty, its still empty"+LN;
+		actions += " - Reveals the true state of the underlying square"+LN;
+		actions += " - Takes time given by the terrain of the square"+LN;
+		actions += "Scan - "+LN;
+		actions += " - Reveals the true state of a three by three grid surrounding the selected square"+LN;
+		actions += " - Takes one turn"+LN;
+		actions += "Declare Victory - "+LN;
+		actions += " - Win if you have connected the left and right sides of the board"+LN;
+		actions += " - If you run out of uses without winning, you lose"+LN;
+		actions += " - Takes one turn"+LN;
+		String terrain = "Terrain:"+LN;
+		terrain += "Fields (Brown): 1 turn to place or revert"+LN;
+		terrain += "Forest (Green) 2 turns to place or revert"+LN;
+		terrain += "Roads (Yellow): place or revert 2 squares connected by roads in one turn"+LN;
+		terrain += "Mountain (Gray): cannot be placed or reverted"+LN;
+		return objective+actions+terrain;
+
+
 	}
     private void dumpDelayed() {
         while (!delayed.isEmpty()) {

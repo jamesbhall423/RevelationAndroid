@@ -24,10 +24,16 @@ public class AndroidMenu {
             list.add(next);
             correlator.put(displayItem,next);
         }
-        MenuItem notificationDisplay = menu.add("");
-        NotificationViewer notificationViewer = new NotificationViewer(model,notificationDisplay,context);
-        correlator.put(notificationDisplay,notificationViewer);
-        list.add(notificationViewer);
+        addTextDisplayViewer(menu,model,context,"notifications",GameActivity.DISPLAY_NOTIFICATIONS);
+        addTextDisplayViewer(menu,model,context,"instructions",GameActivity.DISPLAY_INSTRUCTIONS);
+        addTextDisplayViewer(menu,model,context,"game",GameActivity.DISPLAY_MAIN);
+    }
+    private void addTextDisplayViewer(Menu menu, BoxModel model, GameActivity context, String name, int displayRef) {
+        MenuItem next = menu.add(name);
+        TextDisplayViewer viewer = new TextDisplayViewer(model,next,context,name,displayRef);
+        correlator.put(next,viewer);
+        list.add(viewer);
+
     }
     public void updateItems() {
         for (AndroidMenuItem item: list) item.update();
