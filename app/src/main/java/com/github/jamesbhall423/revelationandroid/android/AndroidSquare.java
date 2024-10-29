@@ -31,6 +31,7 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     private Paint paint = new Paint();
     private ShakeGraphics graphics;
     private AndroidGraphics canvasHolder;
+    private boolean showTrueValue = false;
     public AndroidSquare(AppCompatActivity context, MainViewModel viewModel, SquareClass square, ModelClickListener listener, int boardSize) {
         super(context);
         canvasHolder = new AndroidGraphics(null,paint);
@@ -64,7 +65,7 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvasHolder.setCanvas(canvas);
-        SquarePainter.paint(model,graphics,endDisplay);
+        SquarePainter.paint(model,graphics,endDisplay,showTrueValue);
     }
 
     @Override
@@ -98,5 +99,8 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
 
     public void setRevelationDisplay(RevelationDisplayLocal endDisplay) {
         this.endDisplay = endDisplay;
+    }
+    public void showTrueValue() {
+        showTrueValue = true;
     }
 }

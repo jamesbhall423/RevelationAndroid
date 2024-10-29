@@ -238,10 +238,9 @@ public class SquareClass implements SquareModel, Serializable {
 //		else return called2;
 //	}
 	public static String coordinates(int X, int Y) {
-		char first = (char)('a'+Y);
-		int x = X+1;
-		if (x<10) return first+"0"+x;
-		else return first+""+x;
+		char first = (char)('a'+X);
+		int y = Y+1;
+		return first+""+y;
 	}
 	@Override
 	public SquareState getState() {

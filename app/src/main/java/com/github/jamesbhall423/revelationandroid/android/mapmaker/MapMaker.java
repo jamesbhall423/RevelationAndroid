@@ -75,6 +75,7 @@ public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
         for (int y = 0; y < model.displayHeight(); y++) for (int x = 0; x < model.displayWidth(); x++) {
             board[y][x] = new AndroidSquare(this,null,model.getDisplaySquare(x,y),bar,model.displayHeight());
             displayBoard.addView(board[y][x]);
+            board[y][x].showTrueValue();
         }
         display.addView(displayBoard);
         player1Recorder = new PlayerRecorder(players[0],findViewById(R.id.ScansP1),findViewById(R.id.RevertsP1),findViewById(R.id.DeclaresP1));

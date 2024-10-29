@@ -3,6 +3,7 @@ package com.github.jamesbhall423.revelationandroid.model;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -71,6 +72,10 @@ public class BoxModel {
 		time = new int[map.players.length];
 		times = new int[players.length];
 		endTimes = new int[players.length];
+		Arrays.fill(time,1);
+		Arrays.fill(times,1);
+		Arrays.fill(endTimes,1);
+		curTime=1;
 		notifications.add(statsNotification());
 		updateDeclareResponsive();
 	}
@@ -365,12 +370,7 @@ public class BoxModel {
         this.endStatus=status;
 		updater.updateEndStatus();
 		buffer.close();
-		if (endStatus==EndStatus.WIN||endStatus==EndStatus.LOSS||endStatus==EndStatus.BLOCKED) {
-			for (int y = 0; y < board.length; y++) for (int x = 0; x < board[y].length; x++) {
-				if (board[y][x].player()!=board[y][x].getView(player())) board[y][x].setView(player(),board[y][x].player());
-			}
-			setResponsive(false);
-		}
+		setResponsive(false);
         updater.updateGlobal();
 		updater.updateAllSquares();
     }

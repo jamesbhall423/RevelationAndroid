@@ -6,10 +6,7 @@ import static com.github.jamesbhall423.revelationandroid.model.SquareClass.*;
 
 
 public class SquarePainter {
-	public static void paint(SquareClass model, SquareGraphics g) {
-		paint(model,g,null);
-	}
-	public static void paint(SquareClass model, SquareGraphics g,RevelationDisplayLocal endDisplay) {
+	public static void paint(SquareClass model, SquareGraphics g,RevelationDisplayLocal endDisplay,boolean showTrueValue) {
 		if (g==null) return;
 		double height = g.getHeight();
 		double width = g.getWidth();
@@ -48,9 +45,10 @@ public class SquarePainter {
 //		else if (pl==-1) g.setColor(Colors.magenta);
 //		if (model.player()!=0) g.fillRectangle(2*(int)width/3,2*(int)height/3,(int)width/3,(int)height/3);
 		int player = model.flipDisplay() ? 1 : 0;
-		setPlayerColor(model,g,player);
+		int view = showTrueValue ? model.player() : model.getView(player);
+		setPlayerColor(model,g, view);
 		if (endDisplay!=null) drawRevelationDisplay(model,g,endDisplay.display(model),width,height);
-		else if (model.getView(player)!=0) g.fillEllipse((int)width/3,(int)height/3,(int)width/3,(int)height/3);
+		else if (view!=0) g.fillEllipse((int)width/3,(int)height/3,(int)width/3,(int)height/3);
 		String turns = null;
 		if (model.time()>1) turns = ""+model.time();
 		if (turns!=null) {
@@ -68,9 +66,9 @@ public class SquarePainter {
 		int y = (int)(2*height/3);
 		g.drawString(endDisplay, x, y);
 	}
-	private static void setPlayerColor(SquareClass model, SquareGraphics graphics, int player) {
-		if (!model.flipDisplay()&&model.getView(player)==1||model.flipDisplay()&&model.getView(player)==-1) graphics.setColor(Colors.cyan);
-		else if (!model.flipDisplay()&&model.getView(player)==-1||model.flipDisplay()&&model.getView(player)==1) graphics.setColor(Colors.magenta);
+	private static void setPlayerColor(SquareClass model, SquareGraphics graphics, int view) {
+		if (!model.flipDisplay()&&view==1||model.flipDisplay()&&view==-1) graphics.setColor(Colors.cyan);
+		else if (!model.flipDisplay()&&view==-1||model.flipDisplay()&&view==1) graphics.setColor(Colors.magenta);
 	}
 	private static void drawRoads(SquareClass model, SquareGraphics g, RevelationDisplayLocal endDisplay, double width, double height) {
 		if (model.getType()==SquareType.Road) {

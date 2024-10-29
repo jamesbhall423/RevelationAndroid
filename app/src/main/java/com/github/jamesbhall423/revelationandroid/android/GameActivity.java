@@ -266,6 +266,9 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         for (RevelationDisplayLocal local: global.parts) {
             board[local.displayY()][local.displayX()].setRevelationDisplay(local);
         }
+        for (int y = 0; y < board.length; y++) for (int x = 0; x < board[y].length; x++) {
+            board[y][x].showTrueValue();
+        }
     }
 
     public void showNotifications(List<CAction> notifications) {
