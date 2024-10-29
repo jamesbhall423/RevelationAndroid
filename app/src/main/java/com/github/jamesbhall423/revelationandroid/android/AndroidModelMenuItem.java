@@ -3,7 +3,6 @@ package com.github.jamesbhall423.revelationandroid.android;
 import android.app.Activity;
 import android.view.MenuItem;
 
-import com.github.jamesbhall423.revelationandroid.model.CAction;
 import com.github.jamesbhall423.revelationandroid.model.ModelMenuItem;
 
 public class AndroidModelMenuItem implements AndroidMenuItem {

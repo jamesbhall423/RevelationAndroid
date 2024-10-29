@@ -12,13 +12,8 @@ public abstract class CAction implements Cloneable, Serializable, Comparable<CAc
 	private static final long serialVersionUID = 1L;
 	private static long nextID = 0L;
 	public static final Exit EXIT = Exit.EXIT;
-	public static final Save SAVE = Save.SAVE;
 	public static final DeclareVictory DECLARE = DeclareVictory.DECLARE;
-	public static final ShowReverts SHOW_REVERTS = ShowReverts.SHOW_REVERTS;
 	public static final DoTurn TURN = DoTurn.TURN;
-	public static final Blocked BLOCKED = Blocked.BLOCKED;
-	public static final Message_Action MESSAGE = Message_Action.MESSAGE;
-	public static final ToggleAutoTurns TOGGLE_TURNS = ToggleAutoTurns.TOGGLE_TURNS;
 	public static final int VAL_TURN = 0;
 	public static final int VAL_DELAYED = 2;
 	public static final int VAL_STANDARD = 1;
@@ -114,9 +109,7 @@ public abstract class CAction implements Cloneable, Serializable, Comparable<CAc
 	public int endTime() {
 		return startTime+delay()+time;
 	}
-	public int launchTime() {
-		return startTime+delay();
-	}
+
 	public void updateID() {
 		ID=nextID++;
 	}

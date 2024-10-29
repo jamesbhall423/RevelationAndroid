@@ -1,6 +1,5 @@
 package com.github.jamesbhall423.revelationandroid.android;
 
-import android.app.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;

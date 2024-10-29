@@ -2,30 +2,15 @@ package com.github.jamesbhall423.revelationandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
-import androidx.documentfile.provider.DocumentFile;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.github.jamesbhall423.revelationandroid.android.GameActivity;
-import com.github.jamesbhall423.revelationandroid.android.mapmaker.MapMaker;
-
-import java.io.File;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Collections;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MAP_EXTENSION = ".cmap";

@@ -20,14 +20,12 @@ public class ModelMenuItem extends SelectionItem {
         return action;
     }
     public void doClick() {
-        // View needs to update itself after calling this method
         doClick(null);
     }
     public static List<ModelMenuItem> createMenu(CMap map, int pl, BoxModel model) {
         List<ModelMenuItem> items = new ArrayList<>();
         Player player = map.players[pl];
         items.add(new ModelMenuItem(CAction.EXIT, -1, model,true));
-        //items.add(new ModelMenuItem(CAction.SHOW_REVERTS, player.showReverts, model,false));
         items.add(new ModelMenuItem(CAction.DECLARE, player.declareVictories, model,false));
         return items;
     }

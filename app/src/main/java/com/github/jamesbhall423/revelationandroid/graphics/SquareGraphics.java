@@ -1,13 +1,13 @@
 package com.github.jamesbhall423.revelationandroid.graphics;
 
 public interface SquareGraphics {
-    public double getWidth();
-    public double getHeight();
-    public void setColor(int color);
-    public void fillRectangle(int x, int y, int width, int height);
-    public void fillEllipse(int x, int y, int width, int height);
-    public void drawString(String string, int x, int y);
-    public void setFontSize(int size);
-    public void setFontBold();
-    public void setFontPlain();
+    double getWidth();
+    double getHeight();
+    void setColor(int color);
+    void fillRectangle(int x, int y, int width, int height);
+    void fillEllipse(int x, int y, int width, int height);
+    void drawString(String string, int x, int y);
+    void setFontSize(int size);
+    void setFontBold();
+    void setFontPlain();
 }

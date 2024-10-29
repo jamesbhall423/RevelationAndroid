@@ -39,11 +39,6 @@ public class SquarePainter {
 			g.drawString(""+model.getTeleporter()[2],1,(int)(width/3.5));
 		}
 		drawRoads(model, g, endDisplay, width, height);
-//		int pl = model.player();
-//		if (model.flipDisplay()) pl=-pl;
-//		if (pl==1) g.setColor(Colors.cyan);
-//		else if (pl==-1) g.setColor(Colors.magenta);
-//		if (model.player()!=0) g.fillRectangle(2*(int)width/3,2*(int)height/3,(int)width/3,(int)height/3);
 		int player = model.flipDisplay() ? 1 : 0;
 		int view = showTrueValue ? model.player() : model.getView(player);
 		setPlayerColor(model,g, view);

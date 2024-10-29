@@ -33,7 +33,7 @@ public class RevelationDisplayGlobal {
                     return square.player() == declaringPlayerVal;
                 }
             };
-        } else /*if (displayPlayerDeclared)*/ {
+        } else {
             routeCondition = new SquareCondition() {
                 @Override
                 public boolean conditionFulfilled(SquareModel square) {
@@ -41,14 +41,6 @@ public class RevelationDisplayGlobal {
                 }
             };
         }
-//        else {
-//            routeCondition = new SquareCondition() {
-//                @Override
-//                public boolean conditionFulfilled(SquareModel square) {
-//                    return square.player() != 0;
-//                }
-//            };
-//        }
         Pathfinder finder = new Pathfinder(model.boardModel(),routeCondition);
         Spot endSpot = model.findPathSpot(finder, model.playerSide(model.playerDeclareVictory()));
         if (endSpot==null) throw new RuntimeException();

@@ -30,7 +30,7 @@ public class AndroidMenu {
     }
     private void addTextDisplayViewer(Menu menu, BoxModel model, GameActivity context, String name, int displayRef) {
         MenuItem next = menu.add(name);
-        TextDisplayViewer viewer = new TextDisplayViewer(model,next,context,name,displayRef);
+        TextDisplayViewer viewer = new TextDisplayViewer(next,context,name,displayRef);
         correlator.put(next,viewer);
         list.add(viewer);
 

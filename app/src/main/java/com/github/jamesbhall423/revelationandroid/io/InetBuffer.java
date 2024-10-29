@@ -1,6 +1,5 @@
 package com.github.jamesbhall423.revelationandroid.io;
 
-import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.CAction;
 import com.github.jamesbhall423.revelationandroid.model.CBuffer;
 import com.github.jamesbhall423.revelationandroid.model.ChannelledObject;
@@ -35,7 +34,7 @@ public class InetBuffer implements CBuffer, Runnable {
 
     @Override
     public int sendObject(Object o, int channel) {
-        if (channel==ECHO) queue.offer(new ChannelledObject(channel,o));
+        if (channel==ECHO) queue.offer(new ChannelledObject(o));
         out.writeObject(o);
         return 0;
     }
@@ -50,19 +49,17 @@ public class InetBuffer implements CBuffer, Runnable {
     public void run() {
         try {
             while (!closed) {
-                queue.offer(new ChannelledObject(0,in.readObject()));
+                queue.offer(new ChannelledObject(in.readObject()));
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-            queue.offer(new ChannelledObject(0, CAction.EXIT.create(-1,-1)));
-            System.out.println("Exit added to queue");
+            System.out.println("Opponent Left");
+            queue.offer(new ChannelledObject(CAction.EXIT.create(-1,-1)));
         }
         lock.close();
     }
     public void close() {
-        System.out.println("Closing");
         closed = true;
         out.close();
     }

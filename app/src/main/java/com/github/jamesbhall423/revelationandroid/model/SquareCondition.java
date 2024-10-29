@@ -11,5 +11,5 @@ public interface SquareCondition {
 	 * @return
 	 *
 	 */
-	public boolean conditionFulfilled(SquareModel square);	
+	boolean conditionFulfilled(SquareModel square);
 }

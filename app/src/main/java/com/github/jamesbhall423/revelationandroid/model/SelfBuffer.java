@@ -26,44 +26,19 @@ public class SelfBuffer implements CBuffer {
 		return queue.remove();
 	}
 
-	/**
-	 * Method newBuffer
-	 *
-	 *
-	 * @param parm1
-	 *
-	 * @return
-	 *
-	 */
-//	public CBuffer newBuffer(ChannelledObject o) {
-//		return (CBuffer) (o.channel);
-//	}
 
 	/**
 	 * Method sendObject
 	 *
 	 *
-	 * @param parm1
-	 *
-	 * @return
-	 *
-	 */
-//	public int sendObject(ChannelledObject o) {
-//		return ((CBuffer) (o.channel)).recieveObject(o);
-//	}
-
-	/**
-	 * Method sendObject
-	 *
-	 *
-	 * @param parm1
-	 * @param parm2
+	 * @param object
+	 * @param channel
 	 *
 	 * @return
 	 *
 	 */
 	public int sendObject(Object object, int channel) {
-		ChannelledObject out = new ChannelledObject(this,object);
+		ChannelledObject out = new ChannelledObject(object);
 		if ((channel&ECHO)>0) recieveObject(out);
 		int ret = 0;
 		for (int i = 0; i < other.length; i++) ret &= other[i].recieveObject(out);

@@ -1,6 +1,5 @@
 package com.github.jamesbhall423.revelationandroid.android;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
@@ -92,7 +91,6 @@ public class AndroidSquare extends View implements SquareViewUpdater, View.OnCli
     }
     @Override
     public void onClick(View v) {
-        System.out.println("Hello");
         listener.doClick(modelX,modelY);
         invalidate();
     }

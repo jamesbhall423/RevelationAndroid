@@ -6,8 +6,6 @@ public class SquareClass implements SquareModel, Serializable {
 	private static final long serialVersionUID = 1L;
 	private SquareState state;
 	private int[] view = new int[2];
-//	private boolean called1 = false;
-//	private boolean called2 = false;
 	private boolean highlight = false;
     private SquareViewUpdater updater = null;
 	public final int X;
@@ -171,13 +169,10 @@ public class SquareClass implements SquareModel, Serializable {
 	 */
 	@Override
 	public boolean canPlace(int player, boolean revert) {
-//		if (player) called1=true;
-//		else called2=true;
 		if (time()==0) return false;
 		else if (view[player]!=0) return false;
 		else if (state.contents==0) return !revert;
 		else return revert;
-//		else return revert&&(player!=(state.contents>0));
 	}
 
 	/**
@@ -231,12 +226,6 @@ public class SquareClass implements SquareModel, Serializable {
 		state.road=road;
 		updater.update(X,Y);
 	}
-//	@Override
-//	public boolean called(boolean player) {
-//		if (time()==0) return true;
-//		if (player) return called1;
-//		else return called2;
-//	}
 	public static String coordinates(int X, int Y) {
 		char first = (char)('a'+X);
 		int y = Y+1;
@@ -251,10 +240,6 @@ public class SquareClass implements SquareModel, Serializable {
 		this.state=state;
 		view[0]=state.contents;
 		view[1]=state.contents;
-//		if (state.contents!=0) {
-//			called1=true;
-//			called2=true;
-//		}
 		return this;
 	}
 	@Override

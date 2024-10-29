@@ -39,10 +39,8 @@ public class MapmakerBar implements ModelClickListener {
             public boolean onMenuItemClick(MenuItem item) {
                 if (selected!=null) selected.setTitle(selected.getTitle().toString().toUpperCase());
                 selected = item;
-                System.out.println("Receiving item: "+selected.getTitle());
                 if (item.getTitle().toString().equals("EXIT")) context.saveAndExit();
                 else if (correlator.containsKey(item)) {
-                    System.out.println(item.getTitle());
                     squareChanger = correlator.get(item);
                 }
                 item.setTitle(selected.getTitle().toString().toLowerCase());
@@ -61,9 +59,7 @@ public class MapmakerBar implements ModelClickListener {
 
     @Override
     public void doClick(int modelX, int modelY) {
-        System.out.println("Hello 1");
         if (squareChanger!=null) {
-            System.out.println("Hello 2");
             squareChanger.alterSquare(model.getModelSquare(modelX,modelY));
         }
     }

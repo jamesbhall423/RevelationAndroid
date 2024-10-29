@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import com.github.jamesbhall423.revelationandroid.R;
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayGlobal;
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayLocal;
-import com.github.jamesbhall423.revelationandroid.io.ConnectionCreator;
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.BoxViewUpdater;
 import com.github.jamesbhall423.revelationandroid.model.CAction;
@@ -53,7 +52,6 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     private Toolbar toolbar;
     private boolean host;
     private CMap map;
-    private String miniTitle;
     private MainViewModel viewModel;
     private RadioGroup selectorView;
     private LinearLayout.LayoutParams listLayoutParams;
@@ -82,7 +80,6 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
             Thread loader = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("Creating network connection");
                     if (host) viewModel.loadGameFile(GameActivity.this,game_file);
                     else viewModel.loadIP(GameActivity.this,ip_extra,player);
                 }
@@ -97,50 +94,6 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     public void onDestroy() {
         running = false;
         super.onDestroy();
-    }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (menu==null||map==null||model==null) return false;
-//        System.out.println("Creating options menu");
-//        androidMenu = new AndroidMenu(menu,map,model);
-//        return true;
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (androidMenu==null) return false;
-//        androidMenu.optionSelected(item);
-//        return true;
-//    }
-
-    public void loadIP(String ip_extra, int player) {
-        try {
-            final BoxModel model = ConnectionCreator.createClient(ip_extra, player);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setDetails(model);
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
-    public void loadGameFile(String game_file) {
-        try {
-            final BoxModel model = ConnectionCreator.createHost(game_file);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setDetails(model);
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
     }
 
     public void setDetails(BoxModel model) {
@@ -188,7 +141,6 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         notificationList = new LinearLayout(this);
         notificationList.setOrientation(LinearLayout.VERTICAL);
         notificationDisplay.addView(notificationList);
-        setMiniTitle("Pl: "+(model.player()+1));
         new Thread(new Runnable() {
 
             @Override
@@ -208,8 +160,6 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
                 }
             }
         }).start();
-        //setActionBar(toolbar);
-//        openOptionsMenu();
         display.invalidate();
     }
 
@@ -226,13 +176,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         if (androidMenu!=null) androidMenu.updateItems();
         if (selector!=null) selector.updateItems();
     }
-    public void setMiniTitle(String title) {
-        miniTitle=title;
-        updateTitle();
-    }
-    public String getMiniTitle() {
-        return miniTitle;
-    }
+
     private void updateTitle() {
         runOnUiThread(new Runnable() {
             @Override
@@ -246,14 +190,11 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         switch (model.getEndStatus()) {
             case WIN:
                 updateRevelationDisplay();
-                //win();
                 break;
             case LOSS:
                 updateRevelationDisplay();
-                //loss();
                 break;
             case BLOCKED:
-                //blocked();
                 break;
             case ONGOING:
                 break;

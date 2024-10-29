@@ -1,6 +1,5 @@
 package com.github.jamesbhall423.revelationandroid;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -27,7 +26,6 @@ public class FileViewer extends AppCompatActivity {
     public static final String FLAG_MAPMAKER = "FLAG_MAPMAKER";
     public static final String PATH_LOCATION = "PATH";
     private LinearLayout mainLayout;
-    private EditText manualInput;
     private String path;
     private File file;
     private boolean isMapmaker;
@@ -133,7 +131,6 @@ public class FileViewer extends AppCompatActivity {
         Intent next = new Intent();
         next.setClass(this,isMapmaker ? MapMaker.class : GameActivity.class);
         String filepath = path+"/"+fileName+MainActivity.MAP_EXTENSION;
-        System.out.println(filepath);
         next.putExtra(GameActivity.GAME_FILE,filepath);
         if (!isMapmaker) {
             next.putExtra(GameActivity.IP_REFERENCE,getIPAddress(true));
