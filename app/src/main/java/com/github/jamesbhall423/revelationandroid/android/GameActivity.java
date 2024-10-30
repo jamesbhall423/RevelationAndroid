@@ -243,7 +243,12 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     }
 
     public void backToStart() {
-        model.setEndStatus(BoxModel.EndStatus.LOSS);
+        model.setEndStatus(BoxModel.EndStatus.OTHER_LEFT);
         finish();
+    }
+    @Override
+    public void onBackPressed() {
+        model.setEndStatus(BoxModel.EndStatus.OTHER_LEFT);
+        super.onBackPressed();
     }
 }
