@@ -18,9 +18,11 @@ public class AndroidMenu {
     private List<AndroidMenuItem> list = new ArrayList<>();
     public AndroidMenu(Menu menu, BoxModel model, GameActivity context) {
         List<ModelMenuItem> items = model.menu();
-        for (ModelMenuItem item: items) if (item.getAction()!= CAction.EXIT) {
+        for (ModelMenuItem item: items)  {
             MenuItem displayItem = menu.add(item.display());
-            AndroidMenuItem next = new AndroidModelMenuItem(item,displayItem, context);
+            AndroidMenuItem next;
+            if (item.getAction()!= CAction.EXIT) next = new AndroidModelMenuItem(item,displayItem, context);
+            else next = new ExitMenuItem(context);
             list.add(next);
             correlator.put(displayItem,next);
         }

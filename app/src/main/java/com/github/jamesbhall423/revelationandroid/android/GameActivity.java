@@ -241,4 +241,9 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
                 showMain();
         }
     }
+
+    public void backToStart() {
+        model.setEndStatus(BoxModel.EndStatus.LOSS);
+        finish();
+    }
 }
