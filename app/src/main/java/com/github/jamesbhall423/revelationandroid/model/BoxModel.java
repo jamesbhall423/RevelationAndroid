@@ -183,7 +183,7 @@ public class BoxModel {
 		objective+= " - You have connected the left and right sides of the board and declared victory"+LN;
 		objective+= " - Your opponent runs out of declare victories"+LN;
 		objective+= "You lose if"+LN;
-		objective+= " - Your opponent has connected the left and right sides of the board and declared victory"+LN;
+		objective+= " - Your opponent has connected the top and bottom sides of the board and declared victory"+LN;
 		objective+= " - You run out of declare victories"+LN;
 		objective+= "The game draws if"+LN;
 		objective+= " - Both sides know they cannot win by declaring victory"+LN;

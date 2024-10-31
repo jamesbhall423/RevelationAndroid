@@ -248,7 +248,5 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     }
     @Override
     public void onBackPressed() {
-        model.setEndStatus(BoxModel.EndStatus.OTHER_LEFT);
-        super.onBackPressed();
     }
 }
