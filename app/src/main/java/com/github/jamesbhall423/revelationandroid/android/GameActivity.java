@@ -248,5 +248,6 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     }
     @Override
     public void onBackPressed() {
+        showMain();
     }
 }
