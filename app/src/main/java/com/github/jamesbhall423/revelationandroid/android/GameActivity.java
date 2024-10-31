@@ -248,6 +248,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     }
     @Override
     public void onBackPressed() {
-        showMain();
+        System.out.println("On Back Pressed");
+        showDisplay(DISPLAY_MAIN);
     }
 }

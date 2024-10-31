@@ -36,6 +36,7 @@ public class BoxModel {
 	private int[] times;
 	private int[] time;
 	private int[] endTimes;
+	private int[] queuedTimes;
 	private int curPlayer = 0;
 	private int curTime = 0;
 	private SquareModel roadLast = null;
@@ -72,9 +73,11 @@ public class BoxModel {
 		time = new int[map.players.length];
 		times = new int[players.length];
 		endTimes = new int[players.length];
+		queuedTimes = new int[players.length];
 		Arrays.fill(time,1);
 		Arrays.fill(times,1);
 		Arrays.fill(endTimes,1);
+		Arrays.fill(queuedTimes,0);
 		curTime=1;
 		notifications.add(statsNotification());
 		updateDeclareResponsive();
@@ -130,9 +133,9 @@ public class BoxModel {
 		while (buffer.hasObjects()) {
 			CAction message = (CAction)(buffer.getObject().message);
 			if (message.getClass()==Exit.class) {
-			    message = message.create(1-displayPlayer,time[1-displayPlayer]+1);
+			    message = message.create(1-displayPlayer,queuedTimes[1-displayPlayer]+1);
             }
-			if (message.getStartTime()>time[message.player()]) time[message.player()]=message.getStartTime();
+			if (message.getStartTime()>queuedTimes[message.player()]) queuedTimes[message.player()]=message.getStartTime();
 			queue.add(message);
 		} 
 		CAction action = queue.peek();
