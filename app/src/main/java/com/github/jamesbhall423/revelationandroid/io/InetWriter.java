@@ -40,5 +40,7 @@ public class InetWriter extends Thread {
     }
     public void close() {
         closed = true;
+        interrupt();
+        System.out.println("Output Stream Closed");
     }
 }

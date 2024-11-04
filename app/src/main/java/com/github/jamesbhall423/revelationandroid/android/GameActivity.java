@@ -25,6 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     public static final int DISPLAY_MAIN = 0;
@@ -243,12 +245,13 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     }
 
     public void backToStart() {
-        model.setEndStatus(BoxModel.EndStatus.OTHER_LEFT);
+        model.close();
         finish();
     }
     @Override
     public void onBackPressed() {
         System.out.println("On Back Pressed");
-        showDisplay(DISPLAY_MAIN);
+        if (model==null) super.onBackPressed();
+        else showDisplay(DISPLAY_MAIN);
     }
 }

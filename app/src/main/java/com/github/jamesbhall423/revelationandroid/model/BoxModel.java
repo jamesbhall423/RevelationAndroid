@@ -367,6 +367,10 @@ public class BoxModel {
         updater.updateGlobal();
 		updater.updateAllSquares();
     }
+    public void close() {
+		distribute(CAction.EXIT.create(displayPlayer, this.time[displayPlayer]));
+		buffer.close();
+	}
     public void updateBlocked(int player) {
         blocked[player] = true;
     }
