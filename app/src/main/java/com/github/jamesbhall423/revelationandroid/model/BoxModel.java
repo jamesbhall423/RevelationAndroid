@@ -23,7 +23,6 @@ public class BoxModel {
     }
 	private int declaringPlayer = -1;
 	private PriorityQueue<CAction> queue = new PriorityQueue<CAction>();
-	private Queue<CAction> delayed = new ArrayDeque<CAction>();
 
     private SquareClass[][] board;
     private Player[] players;
@@ -135,18 +134,17 @@ public class BoxModel {
 			if (message.getClass()==Exit.class) {
 			    message = message.create(1-displayPlayer,queuedTimes[1-displayPlayer]+1);
             }
+			System.out.println("Queing "+message);
 			if (message.getStartTime()>queuedTimes[message.player()]) queuedTimes[message.player()]=message.getStartTime();
 			queue.add(message);
 		} 
 		CAction action = queue.peek();
 		int top = CAction.VAL_TURN;
 		while (action!=null&&action.typeVal()<=top&&action.player()==curPlayer&&action.getStartTime()==curTime) {
+			System.out.println("Processing "+action);
 			numVoids=0;
 			queue.poll();
-			if (action.typeVal()!=CAction.VAL_DELAYED) process(action);
-			else {
-				delayed.add(action);
-			}
+			process(action);
 			if (action.typeVal()==CAction.VAL_TURN) {
 				top=CAction.VAL_MAX;
 				times[action.player()] = action.endTime();
@@ -154,7 +152,7 @@ public class BoxModel {
 			action = queue.peek();
 		}
 		if (top==CAction.VAL_MAX) {
-			if (curPlayer==player()) dumpDelayed();
+			if (curPlayer==player()) updateDeclareResponsive();
 			curPlayer++;
 			if (curPlayer>=times.length) {
 				curTime++;
@@ -222,13 +220,6 @@ public class BoxModel {
 
 
 	}
-    private void dumpDelayed() {
-        while (!delayed.isEmpty()) {
-            CAction next = delayed.remove();
-            process(next);
-        }
-		updateDeclareResponsive();
-    }
     
 	private void updateDeclareResponsive() {
 		if (declareVictory.numLeft()>0) {
