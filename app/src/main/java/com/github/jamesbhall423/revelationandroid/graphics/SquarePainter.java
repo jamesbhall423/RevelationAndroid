@@ -42,7 +42,8 @@ public class SquarePainter {
 		int player = model.flipDisplay() ? 1 : 0;
 		int view = showTrueValue ? model.player() : model.getView(player);
 		setPlayerColor(model,g, view);
-		if (endDisplay!=null) drawRevelationDisplay(model,g,endDisplay.display(model),width,height);
+		if (endDisplay!=null) drawMainString(model,g,endDisplay.display(model),width,height);
+		else if (model.getTeleporter()!=null) drawMainString(model,g,model.getTeleporter()[2]+"",width,height);
 		else if (view!=0) g.fillEllipse((int)width/3,(int)height/3,(int)width/3,(int)height/3);
 		String turns = null;
 		if (model.time()>1) turns = ""+model.time();
@@ -53,17 +54,18 @@ public class SquarePainter {
 			g.drawString(turns,(int) (2*width/3),(int) (0.9*height));
 		}
 	}
-	private static void drawRevelationDisplay(SquareClass model, SquareGraphics g, String endDisplay, double width, double height) {
+	private static void drawMainString(SquareClass model, SquareGraphics g, String mainString, double width, double height) {
 		g.setFontSize((int)width/2);
 		g.setFontBold();
 		int x = (int)width/3;
-		if (endDisplay.length()>1) x-=(int) width/8;
+		if (mainString.length()>1) x-=(int) width/8;
 		int y = (int)(2*height/3);
-		g.drawString(endDisplay, x, y);
+		g.drawString(mainString, x, y);
 	}
 	private static void setPlayerColor(SquareClass model, SquareGraphics graphics, int view) {
 		if (!model.flipDisplay()&&view==1||model.flipDisplay()&&view==-1) graphics.setColor(Colors.cyan);
 		else if (!model.flipDisplay()&&view==-1||model.flipDisplay()&&view==1) graphics.setColor(Colors.magenta);
+		else graphics.setColor(Colors.blue);
 	}
 	private static void drawRoads(SquareClass model, SquareGraphics g, RevelationDisplayLocal endDisplay, double width, double height) {
 		if (model.getType()==SquareType.Road) {
