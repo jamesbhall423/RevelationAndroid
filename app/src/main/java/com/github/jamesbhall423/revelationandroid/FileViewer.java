@@ -23,21 +23,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class FileViewer extends AppCompatActivity {
-    public static final int TYPE_MAPMAKER = 0;
-    public static final int TYPE_GAME = 1;
-    public static final int TYPE_SEND = 2;
-    public static final int TYPE_RECIEVE = 3;
-    public static final String FLAG_TYPE = "FLAG_TYPE";
+    public static final String FLAG_MAPMAKER = "FLAG_MAPMAKER";
     public static final String PATH_LOCATION = "PATH";
     private LinearLayout mainLayout;
     private String path;
     private File file;
-    private int type;
+    private boolean isMapmaker;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.file_viewer);
         Intent intent = getIntent();
-        type = intent.getIntExtra(FLAG_TYPE,TYPE_GAME);
+        isMapmaker = intent.getBooleanExtra(FLAG_MAPMAKER,false);
         path = intent.getStringExtra(PATH_LOCATION);
         file = new File(path);
         mainLayout = findViewById(R.id.main_layout);
@@ -53,7 +49,7 @@ public class FileViewer extends AppCompatActivity {
             });
             mainLayout.addView(back);
         }
-        if (type==TYPE_MAPMAKER||type==TYPE_RECIEVE) {
+        if (isMapmaker) {
             final EditText manualInput = new EditText(this);
             manualInput.setInputType(InputType.TYPE_CLASS_TEXT);
             manualInput.setText("File Name");
