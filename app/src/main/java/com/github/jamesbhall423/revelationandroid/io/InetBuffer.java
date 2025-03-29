@@ -2,21 +2,21 @@ package com.github.jamesbhall423.revelationandroid.io;
 
 import com.github.jamesbhall423.revelationandroid.model.CAction;
 import com.github.jamesbhall423.revelationandroid.model.CBuffer;
-import com.github.jamesbhall423.revelationandroid.model.CMap;
 import com.github.jamesbhall423.revelationandroid.model.ChannelledObject;
-import static com.github.jamesbhall423.revelationandroid.io.ConnectionCreator.SERIALIZER;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class InetBuffer implements CBuffer, Runnable {
     private ArrayBlockingQueue<ChannelledObject> queue = new ArrayBlockingQueue<>(20);
-    private RevelationInputStream in;
+    private ObjectInputStream in;
     private InetWriter out;
     private boolean closed = false;
     private ClosingLock lock;
-    public InetBuffer(RevelationInputStream in, RevelationOutputStream out, Socket socket) {
+    public InetBuffer(ObjectInputStream in, ObjectOutputStream out, Socket socket) {
         this.in = in;
         lock = new ClosingLock(2,socket);
         this.out = new InetWriter(out,lock);
@@ -35,7 +35,6 @@ public class InetBuffer implements CBuffer, Runnable {
     @Override
     public int sendObject(Object o, int channel) {
         if (channel==ECHO) queue.offer(new ChannelledObject(o));
-        validateCAction((CAction)o);
         out.writeObject(o);
         return 0;
     }
@@ -50,9 +49,9 @@ public class InetBuffer implements CBuffer, Runnable {
     public void run() {
         try {
             while (!closed) {
-                queue.offer(new ChannelledObject(in.readCAction()));
+                queue.offer(new ChannelledObject(in.readObject()));
             }
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             System.out.println("Opponent Left");
@@ -63,15 +62,5 @@ public class InetBuffer implements CBuffer, Runnable {
     public void close() {
         closed = true;
         out.close();
-    }
-    public void validateCAction(CAction action) {
-        try {
-            String json = SERIALIZER.serializeObject(action);
-            CAction result = SERIALIZER.deserializeCAction(json);
-            String newJson = SERIALIZER.serializeObject(result);
-            System.out.println("CAction valid: "+json.equals(newJson));
-        } catch (IllegalAccessException e) {
-            System.out.println(e.getMessage());
-        }
     }
 }
