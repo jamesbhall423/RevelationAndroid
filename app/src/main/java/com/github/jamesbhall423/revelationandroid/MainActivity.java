@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
     private void openFile(boolean isMapmaker) {
         Intent intent = new Intent();
         intent.setClass(this,FileViewer.class);
-        intent.putExtra(FileViewer.FLAG_MAPMAKER,isMapmaker);
+        if (isMapmaker) intent.putExtra(FileViewer.FLAG_TYPE,FileViewer.TYPE_MAPMAKER);
+        else intent.putExtra(FileViewer.FLAG_TYPE,FileViewer.TYPE_GAME);
         intent.putExtra(FileViewer.PATH_LOCATION,getFilesDir().getAbsolutePath());
         startActivity(intent);
     }
