@@ -11,20 +11,23 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.github.jamesbhall423.revelationandroid.R;
 import com.github.jamesbhall423.revelationandroid.android.AndroidSquare;
+import com.github.jamesbhall423.revelationandroid.io.RevelationOutputStream;
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.BoxViewUpdater;
 import com.github.jamesbhall423.revelationandroid.model.CMap;
 import com.github.jamesbhall423.revelationandroid.model.Player;
 import com.github.jamesbhall423.revelationandroid.model.SquareState;
+import com.github.jamesbhall423.revelationandroid.serialization.JSONSerializer;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import static com.github.jamesbhall423.revelationandroid.android.GameActivity.GAME_FILE;
 
 public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
+
+    private static final JSONSerializer serializer = JSONSerializer.getRevelationSerializer();
     public static final int DEFAULT_WIDTH = 8;
     public static final int DEFAULT_HEIGHT = 8;
 
@@ -48,7 +51,7 @@ public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
         gameFile =  intent.getStringExtra(GAME_FILE);
         if (new File(gameFile).exists()) {
             try {
-                CMap map = CMap.read(gameFile);
+                CMap map = CMap.read(gameFile,serializer);
                 model = new BoxModel(map, 0, null);
                 players = map.players;
             }  catch (Exception e) {
@@ -116,11 +119,11 @@ public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
         player2Recorder.record();
         try {
             File writeTo = new File(gameFile);
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(writeTo));
-            out.writeObject(map());
+            RevelationOutputStream out = new RevelationOutputStream(new FileOutputStream(writeTo),serializer);
+            out.writeCMap(map());
             out.close();
             return true;
-        } catch (IOException e) {
+        } catch (IOException | IllegalAccessException e) {
             e.printStackTrace();
             Toast.makeText(this,"Save Failed",Toast.LENGTH_SHORT).show();
             return false;

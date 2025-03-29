@@ -2,13 +2,14 @@ package com.github.jamesbhall423.revelationandroid.io;
 
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.concurrent.ArrayBlockingQueue;
+
+import com.github.jamesbhall423.revelationandroid.model.CAction;
 
 public class InetWriter extends Thread {
     private final ClosingLock lock;
     private ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(20);
-    private ObjectOutputStream ostream;
+    private RevelationOutputStream ostream;
     private boolean closed = false;
 
     @Override
@@ -21,10 +22,12 @@ public class InetWriter extends Thread {
                 }
 
                 while(queue.size()>0) {
-                    ostream.writeObject(queue.poll());
+                    ostream.writeCAction((CAction)queue.poll());
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
         lock.close();
@@ -33,7 +36,7 @@ public class InetWriter extends Thread {
         queue.offer(o);
         interrupt();
     }
-    public InetWriter(ObjectOutputStream ostream, ClosingLock lock) {
+    public InetWriter(RevelationOutputStream ostream, ClosingLock lock) {
         this.ostream = ostream;
         this.lock = lock;
         start();

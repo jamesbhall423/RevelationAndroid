@@ -5,24 +5,30 @@ import java.io.Serializable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import com.github.jamesbhall423.revelationandroid.io.RevelationInputStream;
+import com.github.jamesbhall423.revelationandroid.io.RevelationOutputStream;
+import com.github.jamesbhall423.revelationandroid.serialization.JSONSerializer;
+
 import java.io.IOException;
 public class CMap implements Cloneable, Serializable {
 	private static final long serialVersionUID = 2L;
 	public SquareState[][] squares;
-	public Player[] players;	
+	public Player[] players;
 	/**
 	 * Method writeCMap
 	 * @param name
 	 *
 	 */
-	public void writeCMap(String name) throws IOException {
+	public void writeCMap(String name, JSONSerializer serializer) throws IOException {
 		File writeTo;
-		writeTo = new File("james/games/connection/maps/"+name+".cmap");
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(writeTo));
-		out.writeObject(this);
-		out.close();
+		writeTo = new File("com/github/jamesbhall423/revelationandroid/maps/"+name+".json");
+		RevelationOutputStream out = new RevelationOutputStream(new FileOutputStream(writeTo),serializer);
+		try {
+			out.writeCMap(this);
+			out.close();
+		} catch (IllegalAccessException e) {
+			throw new IOException(e);
+		}
 	}
 
 	public CMap(SquareState[][] squares, Player[] players) {
@@ -30,7 +36,7 @@ public class CMap implements Cloneable, Serializable {
 		this.players=players;
 	}
 	public static String expand(String name) {
-		return "maps/" +name+".cmap";
+		return "maps/" +name+".json";
 	}
 	public Object clone() {
 		try {
@@ -45,27 +51,27 @@ public class CMap implements Cloneable, Serializable {
 			throw new Error(e);
 		}
 	}
-	public static CMap read(String fileName) throws IOException {
+	public static CMap read(String fileName, JSONSerializer serializer) throws IOException {
 		CMap out;
 		try {
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
-			out = (CMap) in.readObject();
+			RevelationInputStream in = new RevelationInputStream(new FileInputStream(fileName),serializer);
+			out = in.readCMap();
 			in.close();
-		} catch (ClassNotFoundException e) {
-			throw new IOException("Invalid Class in Inputing "+fileName,e);
+		} catch (IllegalAccessException e) {
+			throw new IOException("Illegal access in Inputing "+fileName,e);
 		} catch (ClassCastException e) {
 			throw new IOException("Invalid Class in Inputing "+fileName,e);
 		}
 		return out;
 	}
 
-    public SquareClass[][] createBoard(boolean flip, int displayPlayer) {
-        SquareClass[][] out = new SquareClass[squares.length][squares[0].length];
+	public SquareClass[][] createBoard(boolean flip, int displayPlayer) {
+		SquareClass[][] out = new SquareClass[squares.length][squares[0].length];
 		for (int y = 0; y < out.length; y++) for (int x = 0; x < out[y].length; x++) {
 			out[y][x] = new SquareClass(x,y,squares[y][x]);
 			out[y][x].setFlipDisplay(flip);
 			out[y][x].setGlobalPlayerIndex(displayPlayer);
 		}
 		return out;
-    }
+	}
 }

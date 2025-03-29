@@ -13,7 +13,7 @@ import android.widget.EditText;
 import com.github.jamesbhall423.revelationandroid.android.GameActivity;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String MAP_EXTENSION = ".cmap";
+    public static final String MAP_EXTENSION = ".json";
     private static final String IP_REFERENCE = "LAST_IP";
     private static final String DEFAULT_IP = "IP Address";
 
