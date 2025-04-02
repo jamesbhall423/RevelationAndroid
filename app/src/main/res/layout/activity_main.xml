@@ -70,6 +70,20 @@
                 android:text="Edit Map"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/sendMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share Maps"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/receiveMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Receive Maps"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
     </LinearLayout>
 

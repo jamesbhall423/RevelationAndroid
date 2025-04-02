@@ -22,6 +22,9 @@ public class RevelationInputStream {
     public int readInt() throws IOException {
         return Integer.parseInt(stream.read());
     }
+    public String readString() throws IOException {
+        return stream.read();
+    }
     public void close() throws IOException {
         stream.close();
     }

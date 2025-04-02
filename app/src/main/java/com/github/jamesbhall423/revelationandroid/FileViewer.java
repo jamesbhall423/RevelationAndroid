@@ -5,40 +5,55 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.jamesbhall423.revelationandroid.android.GameActivity;
 import com.github.jamesbhall423.revelationandroid.android.mapmaker.MapMaker;
+import com.github.jamesbhall423.revelationandroid.io.ShareClient;
+import com.github.jamesbhall423.revelationandroid.io.ShareServer;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
 
-public class FileViewer extends AppCompatActivity {
+public class FileViewer extends AppCompatActivity implements ShareServer.Updater {
     public static final int TYPE_MAPMAKER = 0;
     public static final int TYPE_GAME = 1;
     public static final int TYPE_SEND = 2;
     public static final int TYPE_RECIEVE = 3;
     public static final String FLAG_TYPE = "FLAG_TYPE";
     public static final String PATH_LOCATION = "PATH";
+    public static final String IP_REFERENCE = "IP_REFERENCE";
     private LinearLayout mainLayout;
+    private String ipOther;
     private String path;
     private File file;
     private int type;
+    private ShareServer shareServer = null;
+    private CheckBox shareCheckBox = null;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.file_viewer);
         Intent intent = getIntent();
         type = intent.getIntExtra(FLAG_TYPE,TYPE_GAME);
         path = intent.getStringExtra(PATH_LOCATION);
+        ipOther = intent.getStringExtra(IP_REFERENCE);
+        System.out.println("Creating file viewer");
+        System.out.println(type);
+        System.out.println(path);
+        System.out.println(ipOther);
         file = new File(path);
         mainLayout = findViewById(R.id.main_layout);
         String containingFolder = getFilesDir().getAbsolutePath();
@@ -53,23 +68,48 @@ public class FileViewer extends AppCompatActivity {
             });
             mainLayout.addView(back);
         }
+        if (type==TYPE_RECIEVE) {
+            TextView label = new TextView(this);
+            label.setText("Ready to receive?");
+            mainLayout.addView(label);
+            shareCheckBox = new CheckBox(this);
+            shareCheckBox.setChecked(shareServer!=null);
+            shareCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    try {
+                        if (isChecked&&shareServer==null) {
+                            shareServer = new ShareServer(path,FileViewer.this);
+                        } else if (!isChecked&&shareServer!=null) {
+                            shareServer.close();
+                            shareServer = null;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            mainLayout.addView(shareCheckBox);
+        }
         if (type==TYPE_MAPMAKER||type==TYPE_RECIEVE) {
             final EditText manualInput = new EditText(this);
             manualInput.setInputType(InputType.TYPE_CLASS_TEXT);
             manualInput.setText("File Name");
             mainLayout.addView(manualInput);
-            Button create = new Button(this);
-            create.setText("Create");
-            create.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String fileName = manualInput.getText().toString();
-                    if (!fileName.contains(".") && !fileName.contains("/") && !fileName.contains("\\")) {
-                        launchPipedActivity(fileName);
+            if (type==TYPE_MAPMAKER) {
+                Button create = new Button(this);
+                create.setText("Create");
+                create.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String fileName = manualInput.getText().toString();
+                        if (!fileName.contains(".") && !fileName.contains("/") && !fileName.contains("\\")) {
+                            doAction(fileName);
+                        }
                     }
-                }
-            });
-            mainLayout.addView(create);
+                });
+                mainLayout.addView(create);
+            }
             Button mkdir = new Button(this);
             mkdir.setText("Make Directory");
             mkdir.setOnClickListener(new View.OnClickListener() {
@@ -112,31 +152,53 @@ public class FileViewer extends AppCompatActivity {
             }
         });
         if (maps!=null) for (final String map: maps) {
-            Button next = new Button(this);
-            final String name = map.substring(0,map.indexOf(MainActivity.MAP_EXTENSION));
-            next.setText(name);
-            next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    launchPipedActivity(name);
-                }
-            });
-            mainLayout.addView(next);
+            addMap(map);
         }
     }
+    private void addMap(String map) {
+        Button next = new Button(this);
+        final String name = map.substring(0,map.indexOf(MainActivity.MAP_EXTENSION));
+        next.setText(name);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doAction(name);
+            }
+        });
+        mainLayout.addView(next);
+    }
     private void changeDirectory(String newDirectory) {
+        shareCheckBox.setChecked(false);
         Intent next = new Intent();
         next.setClass(FileViewer.this,FileViewer.class);
-        next.putExtra(FLAG_MAPMAKER,isMapmaker);
+        next.putExtra(FLAG_TYPE,type);
         next.putExtra(PATH_LOCATION,newDirectory);
         startActivity(next);
     }
+    private void doAction(String fileName) {
+        System.out.println("Doing action");
+        if (type==TYPE_MAPMAKER||type==TYPE_GAME) launchPipedActivity(fileName);
+        else if (type==TYPE_SEND) {
+            sendFile(fileName);
+        }
+    }
+    private void sendFile(final String fileName) {
+        System.out.println("IP OTHER -> "+ipOther);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ShareClient.publish(ipOther,new File(path+"/"+fileName+MainActivity.MAP_EXTENSION),fileName);
+            }
+        }).start();
+    }
     private void launchPipedActivity(String fileName) {
+        System.out.println("launching activity");
         Intent next = new Intent();
-        next.setClass(this,isMapmaker ? MapMaker.class : GameActivity.class);
+        if (type==TYPE_MAPMAKER) next.setClass(this,MapMaker.class);
+        else next.setClass(this,GameActivity.class);
         String filepath = path+"/"+fileName+MainActivity.MAP_EXTENSION;
         next.putExtra(GameActivity.GAME_FILE,filepath);
-        if (!isMapmaker) {
+        if (type==TYPE_GAME) {
             next.putExtra(GameActivity.IP_REFERENCE,getIPAddress(true));
             next.putExtra(GameActivity.CONNECTION_DIRECTION,GameActivity.SERVER);
         }
@@ -173,5 +235,15 @@ public class FileViewer extends AppCompatActivity {
             }
         } catch (Exception ignored) { } // for now eat exceptions
         return "";
+    }
+
+    @Override
+    public void update(final String map) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                addMap(map+MainActivity.MAP_EXTENSION);
+            }
+        });
     }
 }

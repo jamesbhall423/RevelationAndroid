@@ -45,14 +45,28 @@ public class MainActivity extends AppCompatActivity {
         hoster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFile(false);
+                openFile(FileViewer.TYPE_GAME);
             }
         });
         Button mapmakerButton = findViewById(R.id.mapmaker);
         mapmakerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFile(true);
+                openFile(FileViewer.TYPE_MAPMAKER);
+            }
+        });
+        Button shareButton = findViewById(R.id.sendMap);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFile(FileViewer.TYPE_SEND);
+            }
+        });
+        Button receiveButton = findViewById(R.id.receiveMap);
+        receiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFile(FileViewer.TYPE_RECIEVE);
             }
         });
     }
@@ -71,12 +85,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void openFile(boolean isMapmaker) {
+    private void openFile(int type) {
         Intent intent = new Intent();
         intent.setClass(this,FileViewer.class);
-        if (isMapmaker) intent.putExtra(FileViewer.FLAG_TYPE,FileViewer.TYPE_MAPMAKER);
-        else intent.putExtra(FileViewer.FLAG_TYPE,FileViewer.TYPE_GAME);
+        intent.putExtra(FileViewer.FLAG_TYPE,type);
         intent.putExtra(FileViewer.PATH_LOCATION,getFilesDir().getAbsolutePath());
+        if (type==FileViewer.TYPE_SEND) {
+            EditText ip = findViewById(R.id.address);
+            intent.putExtra(FileViewer.IP_REFERENCE,ip.getText().toString());
+        }
         startActivity(intent);
     }
 }

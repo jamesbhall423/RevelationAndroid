@@ -9,8 +9,8 @@ import com.github.jamesbhall423.revelationandroid.serialization.JSONSerializer;
 public class RevelationOutputStream {
     private TextOutputStream stream;
     private JSONSerializer serializer;
-    public RevelationOutputStream(OutputStream stream, JSONSerializer serializer) {
-        this.stream = new TextOutputStream(stream);
+    public RevelationOutputStream(OutputStream stream, JSONSerializer serializer, boolean extraSpacing) {
+        this.stream = new TextOutputStream(stream,extraSpacing);
         this.serializer = serializer;
     }
     public void writeCAction(CAction action) throws IOException, IllegalAccessException {
@@ -21,6 +21,9 @@ public class RevelationOutputStream {
     }
     public void writeInt(int val) throws IOException {
         stream.write(val+"");
+    }
+    public void writeString(String val) throws IOException {
+        stream.write(val);
     }
     public void close() throws IOException {
         stream.close();

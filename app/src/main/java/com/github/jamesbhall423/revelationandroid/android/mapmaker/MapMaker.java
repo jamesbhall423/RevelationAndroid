@@ -27,7 +27,7 @@ import static com.github.jamesbhall423.revelationandroid.android.GameActivity.GA
 
 public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
 
-    private static final JSONSerializer serializer = JSONSerializer.getRevelationSerializer();
+    private static final JSONSerializer serializer = JSONSerializer.REVELATION_SERIALIZER;
     public static final int DEFAULT_WIDTH = 8;
     public static final int DEFAULT_HEIGHT = 8;
 
@@ -119,7 +119,7 @@ public class MapMaker extends AppCompatActivity implements BoxViewUpdater {
         player2Recorder.record();
         try {
             File writeTo = new File(gameFile);
-            RevelationOutputStream out = new RevelationOutputStream(new FileOutputStream(writeTo),serializer);
+            RevelationOutputStream out = new RevelationOutputStream(new FileOutputStream(writeTo),serializer,false);
             out.writeCMap(map());
             out.close();
             return true;

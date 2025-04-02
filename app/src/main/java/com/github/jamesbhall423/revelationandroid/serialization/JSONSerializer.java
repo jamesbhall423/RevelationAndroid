@@ -26,7 +26,8 @@ public class JSONSerializer {
     private String typeDescriptorName;
     private String newLine;
     private static final String INDENT_INCREASE = "    ";
-    public static JSONSerializer getRevelationSerializer() {
+    public static final JSONSerializer REVELATION_SERIALIZER = getRevelationSerializer();
+    private static JSONSerializer getRevelationSerializer()  {
         String typeName = "object_type";
         Map<String, EmptyConstructor> typeConstructors = new HashMap<>();
         addTypeConstructor(typeConstructors, "DeclareVictory", DeclareVictory.class);
@@ -40,7 +41,7 @@ public class JSONSerializer {
             @Override
             public Class<?> getType() {
                 return ScanAction.class;
-            } 
+            }
         });
         typeConstructors.put("SquareAction", new EmptyConstructor() {
             @Override
@@ -50,7 +51,7 @@ public class JSONSerializer {
             @Override
             public Class<?> getType() {
                 return SquareAction.class;
-            } 
+            }
         });
         typeConstructors.put("StartNotification", new EmptyConstructor() {
             @Override
@@ -60,7 +61,7 @@ public class JSONSerializer {
             @Override
             public Class<?> getType() {
                 return StartNotification.class;
-            } 
+            }
         });
         typeConstructors.put("CMap", new EmptyConstructor() {
             @Override
@@ -70,7 +71,7 @@ public class JSONSerializer {
             @Override
             public Class<?> getType() {
                 return CMap.class;
-            } 
+            }
         });
         typeConstructors.put("Player", new EmptyConstructor() {
             @Override
@@ -80,7 +81,7 @@ public class JSONSerializer {
             @Override
             public Class<?> getType() {
                 return Player.class;
-            } 
+            }
         });
         addTypeConstructor(typeConstructors, "CAction", CAction.class);
         addTypeConstructor(typeConstructors, "SquareState", SquareState.class);
@@ -245,7 +246,7 @@ public class JSONSerializer {
         else if (json instanceof PrimitiveObject) {
             PrimitiveObject object = (PrimitiveObject) json;
             if (type.isEnum())  {
-                return Enum.valueOf((Class<Enum>) type, object.value()); 
+                return Enum.valueOf((Class<Enum>) type, object.value());
             } else if (type == Integer.TYPE) return Integer.valueOf(object.value());
             else if (type == Double.TYPE) return Double.valueOf(object.value());
             else if (type == Long.TYPE) return Long.valueOf(object.value());
@@ -265,5 +266,8 @@ public class JSONSerializer {
         CMap out = (CMap) deserializeObject(json);
         if (!CMapVerifier.verifyCMap(out)) throw new IllegalArgumentException("invalid CMap");
         return out;
+    }
+    public String deserializeString(String json) {
+        return json.substring(1,json.length()-1);
     }
 }

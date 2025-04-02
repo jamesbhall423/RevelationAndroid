@@ -6,14 +6,16 @@ import java.io.Writer;
 
 public class TextOutputStream {
     private Writer writer;
-    public TextOutputStream(OutputStream stream) {
+    private boolean extraSpacing;
+    public TextOutputStream(OutputStream stream, boolean extraSpacing) {
         writer = new OutputStreamWriter(stream);
+        this.extraSpacing = extraSpacing;
     }
 
     public void write(String val) throws IOException {
-        writer.write(Character.toChars(TextConstants.START_TEXT));
+        if (extraSpacing) writer.write(Character.toChars(TextConstants.START_TEXT));
         writer.write(val);
-        writer.write(Character.toChars(TextConstants.END_TEXT));
+        if (extraSpacing) writer.write(Character.toChars(TextConstants.END_TEXT));
         writer.flush();
     }
     public void close() throws IOException {
