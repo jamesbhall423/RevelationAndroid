@@ -168,7 +168,7 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
         mainLayout.addView(next);
     }
     private void changeDirectory(String newDirectory) {
-        shareCheckBox.setChecked(false);
+        ensureShareServerClosed();
         Intent next = new Intent();
         next.setClass(FileViewer.this,FileViewer.class);
         next.putExtra(FLAG_TYPE,type);
@@ -245,5 +245,20 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
                 addMap(map+MainActivity.MAP_EXTENSION);
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        ensureShareServerClosed();
+        super.onBackPressed();
+    }
+    public void ensureShareServerClosed() {
+        if (shareCheckBox!=null) shareCheckBox.setChecked(false);
+        if (shareServer!=null) {
+            try {
+                shareServer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

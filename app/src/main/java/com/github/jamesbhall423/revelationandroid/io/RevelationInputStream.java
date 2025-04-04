@@ -14,7 +14,9 @@ public class RevelationInputStream {
         this.serializer = serializer;
     }
     public CAction readCAction() throws IllegalAccessException, IOException {
-        return serializer.deserializeCAction(stream.read());
+        String read = stream.read();
+        if (read.length()==0) throw new IOException("Empty String read");
+        else return serializer.deserializeCAction(read);
     }
     public CMap readCMap() throws IllegalAccessException, IOException {
         return serializer.deserializeCMap(stream.read());
