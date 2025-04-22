@@ -43,6 +43,7 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
     private int type;
     private ShareServer shareServer = null;
     private CheckBox shareCheckBox = null;
+    private CheckBox deleteCheckBox = null;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.file_viewer);
@@ -97,6 +98,12 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
             manualInput.setText("File Name");
             mainLayout.addView(manualInput);
             if (type==TYPE_MAPMAKER) {
+                TextView label = new TextView(this);
+                label.setText("Delete?");
+                mainLayout.addView(label);
+                deleteCheckBox = new CheckBox(this);
+                deleteCheckBox.setChecked(false);
+                mainLayout.addView(deleteCheckBox);
                 Button create = new Button(this);
                 create.setText("Create");
                 create.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +111,7 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
                     public void onClick(View v) {
                         String fileName = manualInput.getText().toString();
                         if (!fileName.contains(".") && !fileName.contains("/") && !fileName.contains("\\")) {
-                            doAction(fileName);
+                            doAction(fileName,v);
                         }
                     }
                 });
@@ -137,7 +144,8 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    changeDirectory(nextDirectory.getAbsolutePath());
+                    if (deleteCheckBox!=null&&deleteCheckBox.isChecked()) deleteFileFromViewer(nextDirectory.getAbsolutePath(),v);
+                    else changeDirectory(nextDirectory.getAbsolutePath());
                 }
             });
             mainLayout.addView(next);
@@ -162,7 +170,7 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doAction(name);
+                doAction(name,v);
             }
         });
         mainLayout.addView(next);
@@ -175,12 +183,17 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
         next.putExtra(PATH_LOCATION,newDirectory);
         startActivity(next);
     }
-    private void doAction(String fileName) {
+    private void doAction(String fileName, View view) {
         System.out.println("Doing action");
-        if (type==TYPE_MAPMAKER||type==TYPE_GAME) launchPipedActivity(fileName);
+        if (deleteCheckBox!=null&&deleteCheckBox.isChecked()) deleteFileFromViewer(path+"/"+fileName+".json",view);
+        else if (type==TYPE_MAPMAKER||type==TYPE_GAME) launchPipedActivity(fileName);
         else if (type==TYPE_SEND) {
             sendFile(fileName);
         }
+    }
+    private void deleteFileFromViewer(String fileName, View view) {
+        if (new File(fileName).delete()) view.setVisibility(View.GONE);
+
     }
     private void sendFile(final String fileName) {
         System.out.println("IP OTHER -> "+ipOther);
