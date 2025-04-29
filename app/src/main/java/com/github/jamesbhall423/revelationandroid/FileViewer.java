@@ -36,6 +36,8 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
     public static final String FLAG_TYPE = "FLAG_TYPE";
     public static final String PATH_LOCATION = "PATH";
     public static final String IP_REFERENCE = "IP_REFERENCE";
+    public static final String TUTORIAL_LOCATION = "Tutorial";
+    public static final int TYPE_TUTORIAL = 4;
     private LinearLayout mainLayout;
     private String ipOther;
     private String path;
@@ -58,6 +60,7 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
         file = new File(path);
         mainLayout = findViewById(R.id.main_layout);
         String containingFolder = getFilesDir().getAbsolutePath();
+        if (type==TYPE_TUTORIAL) containingFolder+="/"+TUTORIAL_LOCATION;
         if (path.length()>containingFolder.length()) {
             Button back = new Button(this);
             back.setText("Back");
@@ -138,7 +141,7 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
                 return pathname.isDirectory();
             }
         });
-        if (directories!=null) for (final File nextDirectory: directories) {
+        if (directories!=null) for (final File nextDirectory: directories) /*if (!nextDirectory.getName().equals(TUTORIAL_LOCATION))*/ {
             Button next = new Button(this);
             next.setText(nextDirectory.getName());
             next.setOnClickListener(new View.OnClickListener() {
@@ -181,12 +184,13 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
         next.setClass(FileViewer.this,FileViewer.class);
         next.putExtra(FLAG_TYPE,type);
         next.putExtra(PATH_LOCATION,newDirectory);
+        if (type==TYPE_SEND) next.putExtra(IP_REFERENCE,ipOther);
         startActivity(next);
     }
     private void doAction(String fileName, View view) {
         System.out.println("Doing action");
         if (deleteCheckBox!=null&&deleteCheckBox.isChecked()) deleteFileFromViewer(path+"/"+fileName+".json",view);
-        else if (type==TYPE_MAPMAKER||type==TYPE_GAME) launchPipedActivity(fileName);
+        else if (type==TYPE_MAPMAKER||type==TYPE_GAME||type==TYPE_TUTORIAL) launchPipedActivity(fileName);
         else if (type==TYPE_SEND) {
             sendFile(fileName);
         }
@@ -211,6 +215,7 @@ public class FileViewer extends AppCompatActivity implements ShareServer.Updater
         else next.setClass(this,GameActivity.class);
         String filepath = path+"/"+fileName+MainActivity.MAP_EXTENSION;
         next.putExtra(GameActivity.GAME_FILE,filepath);
+        if (type==TYPE_TUTORIAL) next.putExtra(GameActivity.TUTORIAL_REFERENCE, true);
         if (type==TYPE_GAME) {
             next.putExtra(GameActivity.IP_REFERENCE,getIPAddress(true));
             next.putExtra(GameActivity.CONNECTION_DIRECTION,GameActivity.SERVER);

@@ -61,7 +61,7 @@ public class Pathfinder {
 	 * Method PathFinder
 	 *
 	 *
-	 * @param board
+	 * @param game
 	 * @param condition
 	 *
 	 */

@@ -48,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
                 openFile(FileViewer.TYPE_GAME);
             }
         });
+
+        Button tutorial = findViewById(R.id.singlePlayer);
+        tutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFile(FileViewer.TYPE_TUTORIAL);
+            }
+        });
         Button mapmakerButton = findViewById(R.id.mapmaker);
         mapmakerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(this,FileViewer.class);
         intent.putExtra(FileViewer.FLAG_TYPE,type);
-        intent.putExtra(FileViewer.PATH_LOCATION,getFilesDir().getAbsolutePath());
+        if (type==FileViewer.TYPE_TUTORIAL) intent.putExtra(FileViewer.PATH_LOCATION,getFilesDir().getAbsolutePath()+"/"+FileViewer.TUTORIAL_LOCATION);
+        else intent.putExtra(FileViewer.PATH_LOCATION,getFilesDir().getAbsolutePath());
         if (type==FileViewer.TYPE_SEND) {
             EditText ip = findViewById(R.id.address);
             intent.putExtra(FileViewer.IP_REFERENCE,ip.getText().toString());

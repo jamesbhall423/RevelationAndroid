@@ -7,24 +7,32 @@ import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
+import com.github.jamesbhall423.revelationandroid.FileViewer;
 import com.github.jamesbhall423.revelationandroid.R;
+import com.github.jamesbhall423.revelationandroid.ai.AIRunner;
+import com.github.jamesbhall423.revelationandroid.ai.TurnCounter;
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayGlobal;
 import com.github.jamesbhall423.revelationandroid.graphics.RevelationDisplayLocal;
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.BoxViewUpdater;
 import com.github.jamesbhall423.revelationandroid.model.CAction;
 import com.github.jamesbhall423.revelationandroid.model.CMap;
+import com.github.jamesbhall423.revelationandroid.model.SelfBuffer;
+import com.github.jamesbhall423.revelationandroid.serialization.JSONSerializer;
 
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,6 +41,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     public static final int DISPLAY_NOTIFICATIONS = 1;
     public static final int DISPLAY_INSTRUCTIONS = 2;
     public static final String PLAYER_REFERENCE = "PLAYER_REFERENCE";
+    public static final String TUTORIAL_REFERENCE = "TUTORIAL_REFERENCE";
     private static final int IN_PORT=4111;
     public static final String CONNECTION_DIRECTION = "CONNECTION_DIRECTION";
     public static final String IP_REFERENCE = "IP_REFERENCE";
@@ -57,6 +66,8 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
     private MainViewModel viewModel;
     private RadioGroup selectorView;
     private LinearLayout.LayoutParams listLayoutParams;
+    private boolean isTutorial = false;
+    private int tutorialNum = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +76,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         setContentView(R.layout.loading_screen);
         Intent intent = getIntent();
         final String ip_extra = intent.getStringExtra(IP_REFERENCE);
-        int connection_type = intent.getIntExtra(CONNECTION_DIRECTION,CLIENT);
+        int connection_type = intent.getIntExtra(CONNECTION_DIRECTION,SERVER);
         host = (connection_type==SERVER);
         final String game_file;
         if (host) game_file =  intent.getStringExtra(GAME_FILE);
@@ -76,13 +87,19 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         if (host) typeView.setText("Hosting");
         else typeView.setText("Joining");
         ipView.setText(ip_extra);
+        isTutorial = intent.getBooleanExtra(TUTORIAL_REFERENCE,false);
+        if (isTutorial) {
+            String fileName = game_file.substring((game_file.indexOf("Tutorial/")+"Tutorial/".length()));
+            Scanner numLocator = new Scanner(fileName);
+            tutorialNum = numLocator.nextInt();
+        }
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         if (viewModel.boxModel() != null) setDetails(viewModel.boxModel());
         else {
             Thread loader = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if (host) viewModel.loadGameFile(GameActivity.this,game_file);
+                    if (host) viewModel.loadGameFile(GameActivity.this,game_file,isTutorial);
                     else viewModel.loadIP(GameActivity.this,ip_extra,player);
                 }
             });
@@ -163,6 +180,32 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
             }
         }).start();
         display.invalidate();
+        switch (tutorialNum) {
+            case 1:
+                Toast.makeText(this,R.string.tutorial1,Toast.LENGTH_LONG).show();
+                break;
+            case 2:
+                Toast.makeText(this,R.string.tutorial2,Toast.LENGTH_LONG).show();
+                break;
+            case 3:
+                Toast.makeText(this,R.string.tutorial3,Toast.LENGTH_LONG).show();
+                break;
+            case 4:
+                Toast.makeText(this,R.string.tutorial4,Toast.LENGTH_LONG).show();
+                break;
+        }
+        if (isTutorial) {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    GameActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(GameActivity.this,"More details and actions are available in the options menu",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            },10000);
+        }
     }
 
     @Override
@@ -237,6 +280,7 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
                 display.addView(instructionsScroll);
                 break;
             case DISPLAY_NOTIFICATIONS:
+                TurnCounter.printEdgeLengths(model);
                 showNotifications(model.notifications());
                 break;
             default:

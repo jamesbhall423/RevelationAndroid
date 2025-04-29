@@ -1,0 +1,433 @@
+{
+    "object_type": "CMap",
+    "squares": [
+        [
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "teleporter": [
+                    5,
+                    0,
+                    0
+                ],
+                "contents": 1
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Road,
+                "road": 12,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "teleporter": [
+                    1,
+                    0,
+                    0
+                ],
+                "contents": 1
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 1
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 1
+            }
+        ],
+        [
+            {
+                "object_type": "SquareState",
+                "type": Mountain,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Road,
+                "road": 12,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Forest,
+                "road": 0,
+                "contents": 0
+            }
+        ],
+        [
+            {
+                "object_type": "SquareState",
+                "type": Mountain,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Forest,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Road,
+                "road": 12,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Forest,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            }
+        ],
+        [
+            {
+                "object_type": "SquareState",
+                "type": Mountain,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Road,
+                "road": 12,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            }
+        ],
+        [
+            {
+                "object_type": "SquareState",
+                "type": Mountain,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Forest,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Road,
+                "road": 6,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Road,
+                "road": 9,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            }
+        ],
+        [
+            {
+                "object_type": "SquareState",
+                "type": Mountain,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Forest,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Road,
+                "road": 12,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Forest,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            }
+        ],
+        [
+            {
+                "object_type": "SquareState",
+                "type": Mountain,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Forest,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Road,
+                "road": 12,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            }
+        ],
+        [
+            {
+                "object_type": "SquareState",
+                "type": Mountain,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Road,
+                "road": 4,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Forest,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            },
+            {
+                "object_type": "SquareState",
+                "type": Empty,
+                "road": 0,
+                "contents": 0
+            }
+        ]
+    ],
+    "players": [
+        {
+            "object_type": "Player",
+            "numReverts": 0,
+            "scans": 0,
+            "declareVictories": 1,
+            "message": "",
+            "side": true
+        },
+        {
+            "object_type": "Player",
+            "numReverts": 1,
+            "scans": 0,
+            "declareVictories": 1,
+            "message": "",
+            "side": false
+        }
+    ]
+}

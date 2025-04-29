@@ -28,7 +28,7 @@ public class AppInitializer {
 
     private static boolean copyAssetFolder(AssetManager assetManager,
                                            String fromAssetPath, String toPath) {
-        System.out.println("Copying folder");
+        System.out.println("Copying folder "+fromAssetPath+" "+toPath);
         try {
             String[] files = assetManager.list(fromAssetPath);
             new File(toPath).mkdirs();
@@ -44,7 +44,7 @@ public class AppInitializer {
                 else {
                     System.out.println("Copying dir "+file);
                     res &= copyAssetFolder(assetManager,
-                            fromAssetPath + file,
+                            fromAssetPath +file+"/",
                             toPath + "/" + file);
                 }
 

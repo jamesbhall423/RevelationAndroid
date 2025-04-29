@@ -6,12 +6,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.github.jamesbhall423.revelationandroid.ai.AIRunner;
 import com.github.jamesbhall423.revelationandroid.io.ConnectionCreator;
 import com.github.jamesbhall423.revelationandroid.model.BoxModel;
 import com.github.jamesbhall423.revelationandroid.model.BoxViewUpdater;
+import com.github.jamesbhall423.revelationandroid.model.CMap;
 import com.github.jamesbhall423.revelationandroid.model.PointInt2D;
 import com.github.jamesbhall423.revelationandroid.model.SelectionItemUpdater;
+import com.github.jamesbhall423.revelationandroid.model.SelfBuffer;
 import com.github.jamesbhall423.revelationandroid.model.SquareViewUpdater;
+import com.github.jamesbhall423.revelationandroid.serialization.JSONSerializer;
+
+import java.io.IOException;
 
 public class MainViewModel extends ViewModel {
     private BoxModel model;
@@ -34,9 +40,21 @@ public class MainViewModel extends ViewModel {
             System.exit(1);
         }
     }
-    public void loadGameFile(final GameActivity activity, String game_file) {
+
+    private BoxModel hostAI(String game_file) throws IOException {
+        CMap map = CMap.read(game_file, JSONSerializer.REVELATION_SERIALIZER);
+        SelfBuffer[] bs = new SelfBuffer[map.players.length];
+        for (int i = 0; i < bs.length; i++) bs[i]=new SelfBuffer();
+        SelfBuffer.setLinks(bs);
+        BoxModel[] models = new BoxModel[map.players.length];
+        for (int i = 0; i < models.length; i++) models[i]=new BoxModel((CMap)map.clone(),i,bs[i]);
+        new Thread(new AIRunner(models[0])).start();
+        return models[1];
+    }
+    public void loadGameFile(final GameActivity activity, String game_file, boolean tutorial) {
         try {
-            model = ConnectionCreator.createHost(game_file);
+            if (tutorial) model = hostAI(game_file);
+            else model = ConnectionCreator.createHost(game_file);
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
