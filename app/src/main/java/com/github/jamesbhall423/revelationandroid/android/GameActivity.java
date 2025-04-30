@@ -30,7 +30,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Timer;
