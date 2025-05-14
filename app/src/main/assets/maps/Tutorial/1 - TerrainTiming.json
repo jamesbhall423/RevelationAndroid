@@ -414,7 +414,7 @@
         {
             "object_type": "Player",
             "numReverts": 0,
-            "scans": 0,
+            "scans": 2,
             "declareVictories": 1,
             "message": "",
             "side": false

@@ -179,7 +179,7 @@ public class BoxModel {
     	String objective = "Objective:"+LN;
     	objective+= "Connect the left to right sides with blue dots and declare victory."+LN;
     	objective+= "Prevent the top and bottom sides from being connected with purple dots"+LN;
-    	objective+= "Two squares are connected when they square a side (diagonals do not count) or the same teleporter number (top-left blue square)"+LN;
+    	objective+= "Two squares are connected when they share a side (diagonals do not count) or the same teleporter number (top-left blue square)"+LN;
     	objective+= "You win if - "+LN;
 		objective+= " - You have connected the left and right sides of the board and declared victory"+LN;
 		objective+= " - Your opponent runs out of declare victories"+LN;
@@ -214,7 +214,7 @@ public class BoxModel {
 		String terrain = "Terrain:"+LN;
 		terrain += "Fields (Brown): 1 turn to place or revert"+LN;
 		terrain += "Forest (Green) 2 turns to place or revert"+LN;
-		terrain += "Roads (Yellow): place or revert 2 squares connected by roads in one turn"+LN;
+		terrain += "Roads (Yellow lines on brown): place or revert 2 squares connected by roads in one turn"+LN;
 		terrain += "Mountain (Gray): cannot be placed or reverted"+LN;
 		return objective+actions+terrain;
 

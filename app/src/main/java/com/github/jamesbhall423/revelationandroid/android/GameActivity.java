@@ -1,5 +1,6 @@
 package com.github.jamesbhall423.revelationandroid.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -113,6 +114,25 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         running = false;
         super.onDestroy();
     }
+    private void displayToastForTime(final int text, final int milis) {
+        final GameActivity context = this;
+        final int interval = 2000;
+        final Toast[] toasts = new Toast[milis/interval];
+        for (int i = 0; i < toasts.length; i++) toasts[i] = Toast.makeText(context,text,Toast.LENGTH_LONG);
+        new Thread(new Runnable() {
+            public void run() {
+                for (int i = 0; i < toasts.length&&!context.isDestroyed(); i++) {
+                    Toast toast = toasts[i];
+                    toast.show();
+                    try {
+                        Thread.sleep(interval);
+                    } catch (InterruptedException e) {
+                    }
+                    toast.cancel();
+                }
+            }
+        }).start();
+    }
 
     public void setDetails(BoxModel model) {
 
@@ -181,16 +201,16 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
         display.invalidate();
         switch (tutorialNum) {
             case 1:
-                Toast.makeText(this,R.string.tutorial1,Toast.LENGTH_LONG).show();
+                displayToastForTime(R.string.tutorial1,10000);
                 break;
             case 2:
-                Toast.makeText(this,R.string.tutorial2,Toast.LENGTH_LONG).show();
+                displayToastForTime(R.string.tutorial2,10000);
                 break;
             case 3:
-                Toast.makeText(this,R.string.tutorial3,Toast.LENGTH_LONG).show();
+                displayToastForTime(R.string.tutorial3,10000);
                 break;
             case 4:
-                Toast.makeText(this,R.string.tutorial4,Toast.LENGTH_LONG).show();
+                displayToastForTime(R.string.tutorial4,10000);
                 break;
         }
         if (isTutorial) {
@@ -199,11 +219,11 @@ public class GameActivity extends AppCompatActivity implements BoxViewUpdater {
                 public void run() {
                     GameActivity.this.runOnUiThread(new Runnable() {
                         public void run() {
-                            Toast.makeText(GameActivity.this,"More details and actions are available in the options menu",Toast.LENGTH_SHORT).show();
+                            if (!GameActivity.this.isDestroyed()) Toast.makeText(GameActivity.this,"The top-right menu contains more options",Toast.LENGTH_LONG).show();
                         }
                     });
                 }
-            },10000);
+            },15000);
         }
     }
 
