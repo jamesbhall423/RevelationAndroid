@@ -47,8 +47,10 @@ public class AIRunner implements Runnable, BoxViewUpdater, SquareViewUpdater {
     public void run() {
         System.out.println("AI running");
         while (model.getEndStatus()== BoxModel.EndStatus.ONGOING) {
+            System.out.println("Next");
             if (declare.enabled()) declare.doClick();
             else if (model.getTime()==turnsToRevert&&revert.numLeft()>0) {
+                System.out.println("Revert attempt");
                 boolean reverted = false;
                 int maxCount = 200;
                 for (int i = 0; i < maxCount&&!reverted; i++) {
@@ -58,8 +60,12 @@ public class AIRunner implements Runnable, BoxViewUpdater, SquareViewUpdater {
                     if (square.isPlayer(false)&&square.getView(0)==0) {
                         revert.doClick(x,y);
                         reverted=true;
+                        if (square.getType()== SquareType.Road) {
+                            if (!doRoads(x,y,true)) if (!doRoads(x,y,false)) throw new RuntimeException("Failure to do roads");
+                        }
                     }
                 }
+                if (!reverted) turnsToRevert++;
             }
             else {
                 BoardEvaluator evaluator = new BoardEvaluator(model,0);
@@ -70,19 +76,21 @@ public class AIRunner implements Runnable, BoxViewUpdater, SquareViewUpdater {
                     place.doClick(x,y);
                     SquareModel square = model.getModelSquare(x,y);
                     if (square.getType()== SquareType.Road) {
-                        if (!doRoads(x,y,true)) doRoads(x,y,false);
+                        if (!doRoads(x,y,true)) if (!doRoads(x,y,false)) throw new RuntimeException("Failure to do roads");
                     }
                 } else {
                     place.doClick(random.nextInt(8),random.nextInt(8));
                 }
             }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
+            while (model.getEndStatus()== BoxModel.EndStatus.ONGOING&&!model.responsive()) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
 
+                }
+                model.step();
+                model.step();
             }
-            model.step();
-            model.step();
         }
         System.out.println("AI stopping");
     }
@@ -90,10 +98,21 @@ public class AIRunner implements Runnable, BoxViewUpdater, SquareViewUpdater {
         return doRoad(x+1,y,testEmpty)||doRoad(x,y+1,testEmpty)||doRoad(x,y-1,testEmpty)||doRoad(x-1,y,testEmpty);
     }
     private boolean doRoad(int x, int y, boolean testEmpty) {
-        if (x<0||y<0||x>=model.modelWidth()||y>=model.modelHeight()) return false;
-        if (!model.getModelSquare(x,y).getHighlight()) return false;
-        if (testEmpty&&model.getModelSquare(x,y).getView(0)!=0) return false;
+        System.out.println("Entering do road: "+x+" "+y+" "+testEmpty);
+        if (x<0||y<0||x>=model.modelWidth()||y>=model.modelHeight()) {
+            System.out.println("Not in bounds");
+            return false;
+        }
+        if (!model.getModelSquare(x,y).getHighlight()) {
+            System.out.println("Not highlighted");
+            return false;
+        }
+        if (testEmpty&&model.getModelSquare(x,y).getView(0)!=0) {
+            System.out.println("Not empty");
+            return false;
+        }
         place.doClick(x,y);
+        System.out.println("Road done");
         return true;
     }
 
