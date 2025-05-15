@@ -177,9 +177,9 @@ public class BoxModel {
 	}
 	public String instructions() {
     	String objective = "Objective:"+LN;
-    	objective+= "Connect the left to right sides with blue dots and declare victory."+LN;
-    	objective+= "Prevent the top and bottom sides from being connected with purple dots"+LN;
-    	objective+= "Two squares are connected when they share a side (diagonals do not count) or the same teleporter number (top-left blue square)"+LN;
+    	objective+= "Connect the left to right sides with light blue tokens (dots or numbers) and declare victory."+LN;
+    	objective+= "Prevent the top and bottom sides from being connected with purple tokens"+LN;
+    	objective+= "Two squares are connected when they share a side (diagonals do not count) or the same teleporter number (top-left dark blue square)"+LN;
     	objective+= "You win if - "+LN;
 		objective+= " - You have connected the left and right sides of the board and declared victory"+LN;
 		objective+= " - Your opponent runs out of declare victories"+LN;

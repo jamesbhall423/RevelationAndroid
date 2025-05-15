@@ -2,7 +2,7 @@
     <string name="app_name">Revelation</string>
     <string name="preference_file_key">com.github.jamesbhall423.RevelationAndroid.PREFERENCE_FILE_KEY</string>
     <string name="tutorial1">"Not all paths between left and right are equal. The computer predictably goes down its fastest path. What is yours? Seize it first!"</string>
-    <string name="tutorial2">"Use the teleporter. It's the only way. The turn counter will guide you from there."</string>
+    <string name="tutorial2">"Use your teleporter. It's the only way. The turn counter will guide you from there."</string>
     <string name="tutorial3">"Oh no! The computer has built its path before you even had a chance to start!"</string>
     <string name="tutorial4">"This time the computer has a revert and inside information about your path. How can you level the playing field?"</string>
 </resources>
