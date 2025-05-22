@@ -25,7 +25,7 @@ public abstract class SquareClickType extends SelectionItem {
     public static List<SquareClickType> clickTypes(BoxModel model) {
         List<SquareClickType> out = new ArrayList<>();
         out.add(new SquareClick("place", -1, model, true, false,"Secretly put token in empty square"));
-        out.add(new SquareClick("revert",model.getPlayerCMap().numReverts,model,false,true, "Secretly flip hidden token"));
+        out.add(new SquareClick("revert",model.getPlayerCMap().numReverts,model,false,true, "Secretly flip Hidden token"));
         out.add(new Scan(model.getPlayerCMap().scans,model,false,"Reveal 3x3 grid (1 turn)"));
         return out;
     }
